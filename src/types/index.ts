@@ -15,14 +15,3 @@ export interface RemoteData {
         value: any,
     }[];
 }
-
-
-export interface UTXO {
-    tx_hash: string,
-    tx_index: number,
-    output_index: number,
-    amount: {
-        unit: string,
-        quantity: number,
-    }[]
-}

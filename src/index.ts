@@ -10,7 +10,7 @@ import { signTransaction } from "./transaction/signTransaction";
 import { findPrvKeyForAddress, parseDerivationPath } from "./utils/key";
 import { mnemonicFromFile, mnemonicToPrivateKey } from "./utils/mnemonic";
 import { writeToFile } from "./utils/file";
-import { UTXO } from "./types";
+import { Responses } from "@blockfrost/blockfrost-js";
 import { getExplorerLink } from "./utils/explorer";
 import { renderMetadata, renderTransactionTable } from "./utils/cli";
 
@@ -122,14 +122,11 @@ class CardanoMetadataOracle extends Command {
             );
 
             // Fetch utxos
-            let utxos: UTXO[] = [];
+            let utxos: Responses['address_utxo_content'] = [];
             if (flags.blockfrost && blockfrostApiKey) {
                 cli.action.start("Fetching UTXOs");
                 // console.log("Fetching UTXOs");
-                const fetchedUtxos = await fetchUtxos(
-                    flags.address,
-                    blockfrostApiKey
-                );
+                const fetchedUtxos = await fetchUtxos(flags.address);
                 if (fetchedUtxos.length > 0) {
                     utxos = fetchedUtxos;
                 } else {
@@ -177,10 +174,7 @@ class CardanoMetadataOracle extends Command {
 
                 // Push transaction to network
                 if (flags["blockfrost"] && blockfrostApiKey) {
-                    const txId = await pushTransaction(
-                        transaction.to_bytes(),
-                        blockfrostApiKey
-                    );
+                    const txId = await pushTransaction(transaction.to_bytes());
                     if (txId) {
                         console.log();
                         console.log(

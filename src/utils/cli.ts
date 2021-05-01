@@ -1,10 +1,11 @@
 import { cli } from "cli-ux";
-import { RemoteData, UTXO } from "../types";
+import {Responses} from '@blockfrost/blockfrost-js';
+import { RemoteData } from "../types";
 
 export const renderTransactionTable = (
     txId: string,
     fee: string,
-    usedUtxos: UTXO[]
+    usedUtxos: Responses['address_utxo_content']
 ) => {
     console.log();
     cli.table(

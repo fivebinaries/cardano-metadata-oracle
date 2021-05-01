@@ -1,17 +1,9 @@
-import axios from "axios";
-import { UTXO } from "../../types";
-export const API_URL = "https://cardano-testnet.blockfrost.io/api/v0";
+import {blockfrostAPI} from '../../utils/blockfrostAPI';
 
-export const pushTransaction = async (transaction: any, apiKey: string) => {
+export const pushTransaction = async (transaction: Uint8Array) => {
     try {
-        const response = await axios.post(`${API_URL}/tx/submit`, transaction, {
-            headers: {
-                'project_id': apiKey,
-                'Content-Type': 'application/cbor',
-            },
-        });
-        return response.data;
-
+        const response = await blockfrostAPI.txSubmit(transaction);
+        return response;
     } catch (err) {
         if (err.response?.data) {
             console.log(err.response?.data);
@@ -22,16 +14,10 @@ export const pushTransaction = async (transaction: any, apiKey: string) => {
     }
 }
 
-
-export const fetchUtxos = async (address: string, apiKey: string) => {
+export const fetchUtxos = async (address: string) => {
     try {
-        const response = await axios.get<UTXO[]>(`${API_URL}/addresses/${address}/utxos`, {
-            headers: {
-                'project_id': apiKey,
-            },
-        });
-        return response.data;
-
+        const response = await blockfrostAPI.addressesUtxosAll(address);
+        return response;
     } catch (err) {
         if (err.response?.data) {
             console.log(err.response?.data);

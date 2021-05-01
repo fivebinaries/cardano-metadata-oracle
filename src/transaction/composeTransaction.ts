@@ -1,7 +1,7 @@
 import * as CardanoWasm from "@emurgo/cardano-serialization-lib-nodejs";
-import { UTXO } from "../types";
+import { Responses } from "@blockfrost/blockfrost-js";
 
-export const sortUtxos = (utxos: UTXO[]) => {
+export const sortUtxos = (utxos: Responses['address_utxo_content']) => {
     return utxos.sort((a, b) => {
         const amountA =
             a.amount.find((a) => a.unit === "lovelace")?.quantity ?? 0;
@@ -14,7 +14,7 @@ export const sortUtxos = (utxos: UTXO[]) => {
 export const composeTransaction = (
     address: string,
     metadatum: CardanoWasm.TransactionMetadatum,
-    utxos: UTXO[]
+    utxos: Responses['address_utxo_content']
 ) => {
     if (!utxos || utxos.length === 0) {
         throw "No UTXOs to include in the transaction.";

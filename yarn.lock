@@ -30,12 +30,12 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@blockfrost/blockfrost-js@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-0.1.1.tgz#876cbd04d0b286a69ed76e0dd3763e2927db3bf0"
-  integrity sha512-MmEmBGdl2G2Dtk0pERsxfzdpFtVn9yfmHtLgPs/oPGh9MjibtVMnKJIhtnBY3637HR53ckqW7w1xcPpUsLE04w==
+"@blockfrost/blockfrost-js@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-0.2.1.tgz#d09dffcd14be030c231064babd3be23632f8b495"
+  integrity sha512-gPBS0GIBX8Y006ChQc8VYUiLN6S1Wl0nIBKIohp186DR7W+N9po9dLK6ZN8WuaY6DoNo6lI8yQKOI0ivAKogeA==
   dependencies:
-    "@blockfrost/openapi" "0.1.9"
+    "@blockfrost/openapi" "0.1.12"
     "@yarnpkg/pnpify" "^2.4.0"
     axios "^0.21.1"
     axios-retry "^3.1.9"
@@ -43,10 +43,10 @@
     rimraf "^3.0.2"
     url-join "^4.0.1"
 
-"@blockfrost/openapi@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@blockfrost/openapi/-/openapi-0.1.9.tgz#33618a2780074f99e1a7a9f4f1f6027794ed61a6"
-  integrity sha512-+6xuxdnzupLHk5V/AtDnGOA+kyDp24dp2FpRrnpdvV671eCvzjXxxrDTqvooi8Ed+jbZNRHJ63JBJ5onUCANgA==
+"@blockfrost/openapi@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@blockfrost/openapi/-/openapi-0.1.12.tgz#501d8e6830c9306fe36e92b0641853fd0b200955"
+  integrity sha512-gG3s9R/P/sqAOgFXs1xTfeojUaIuVICgmKhXskjNutqVRvl89IRqGNsFuJBHXtGG++TKu0p9x34ROkb0YCTZaw==
 
 "@dabh/diagnostics@^2.0.2":
   version "2.0.2"
