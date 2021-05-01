@@ -34,8 +34,8 @@ export const findPrvKeyForAddress = (
     const networkId = testnet
         ? CardanoWasm.NetworkInfo.testnet().network_id()
         : CardanoWasm.NetworkInfo.mainnet().network_id();
-    let accountIndex = derivationPath[0];
-    let addressIndex = derivationPath[2];
+    const accountIndex = derivationPath[0];
+    const addressIndex = derivationPath[2];
 
     const accountKey = bipPrvKey
         .derive(harden(1852)) // purpose

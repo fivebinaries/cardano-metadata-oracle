@@ -51,8 +51,8 @@ export const parseFile = (filePath: string): DataSources | null => {
         if (!fs.existsSync(filePath)) {
             throw Error("Origin file does not exists.");
         }
-        let fileContent = fs.readFileSync(filePath, "utf8");
-        let data = yaml.load(fileContent);
+        const fileContent = fs.readFileSync(filePath, "utf8");
+        const data = yaml.load(fileContent);
 
         const result = validateOriginFile(data);
         if (!result.success) {

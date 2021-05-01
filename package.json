@@ -4,6 +4,12 @@
     "author": "Five Binaries",
     "bin": "./bin/run",
     "bugs": "https://github.com/fivebinaries/cardano-metadata-oracle/issues",
+    "scripts": {
+        "lint": "eslint . --ext .ts",
+        "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
+        "test": "echo NO TESTS",
+        "version": "oclif-dev readme && git add README.md"
+    },
     "dependencies": {
         "@blockfrost/blockfrost-js": "^0.2.1",
         "@emurgo/cardano-serialization-lib-nodejs": "^6.1.0",
@@ -26,6 +32,15 @@
         "@types/js-yaml": "^4.0.0",
         "@types/jsonpath": "^0.2.0",
         "@types/node": "^14.14.37",
+        "@typescript-eslint/eslint-plugin": "latest",
+        "@typescript-eslint/parser": "^4.22.0",
+        "eslint": "^7.24.0",
+        "eslint-config-prettier": "8.1.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "3.3.1",
+        "eslint-plugin-react": "^7.23.1",
+        "jest": "^26.6.3",
+        "prettier": "^2.2.1",
         "typescript": "~4.1.5"
     },
     "engines": {
@@ -45,11 +60,5 @@
         "bin": "cardano-metadata-oracle"
     },
     "repository": "fivebinaries/cardano-metadata-oracle",
-    "scripts": {
-        "posttest": "eslint . --ext .ts --config .eslintrc",
-        "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
-        "test": "echo NO TESTS",
-        "version": "oclif-dev readme && git add README.md"
-    },
     "types": "lib/index.d.ts"
 }
