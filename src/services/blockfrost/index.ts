@@ -22,7 +22,7 @@ export const fetchUtxos = async (address: string) => {
         const response = await client!.addressesUtxosAll(address);
         return response;
     } catch (err) {
-        if (err.response?.data) {
+        if (err?.data) {
             console.log(err?.data);
         } else {
             console.log(err);

@@ -7,7 +7,7 @@ import { parseFile } from "./remote-data/parseOriginFile";
 import { fetchUtxos, pushTransaction } from "./services/blockfrost";
 import { composeTransaction } from "./transaction/composeTransaction";
 import { signTransaction } from "./transaction/signTransaction";
-import { findPrvKeyForAddress, parseDerivationPath } from "./utils/key";
+import { deriveAddressPrvKey, parseDerivationPath } from "./utils/key";
 import { mnemonicFromFile, mnemonicToPrivateKey } from "./utils/mnemonic";
 import { writeToFile } from "./utils/file";
 import { Responses } from "@blockfrost/blockfrost-js";
@@ -28,7 +28,8 @@ class CardanoMetadataOracle extends Command {
         }),
         address: flags.string({
             description: "Address to build the transaction",
-            required: true,
+            required: false,
+            exclusive: ["seed-file"],
         }),
         network: flags.string({
             description:
@@ -46,11 +47,6 @@ class CardanoMetadataOracle extends Command {
         "write-to-file": flags.string({
             description: "Writes transaction to a file",
         }),
-        "skip-signing": flags.boolean({
-            description:
-                "Skip the signing process, just generate the raw transaction",
-            exclusive: ["seed-file"],
-        }),
         "address-derivation-path": flags.string({
             description:
                 "Derivation path for the address in 'account/chain/address' format",
@@ -59,9 +55,9 @@ class CardanoMetadataOracle extends Command {
         }),
         "seed-file": flags.string({
             description:
-                "File containing the ED25519-BIP32 seed phrase (Required if not skip-signing)",
+                "File containing the ED25519-BIP32 seed phrase",
             required: false,
-            exclusive: ["skip-signing"],
+            exclusive: ["address"],
         }),
         blockfrost: flags.boolean({
             description:
@@ -71,7 +67,7 @@ class CardanoMetadataOracle extends Command {
         }),
         "cardano-node-socket": flags.string({
             description:
-                "Path to the cardano-node socket file (Required if not blockfrost nor skip-signing)",
+                "Path to the cardano-node socket file",
             required: false,
             exclusive: ["blockfrost"],
         }),
@@ -81,6 +77,12 @@ class CardanoMetadataOracle extends Command {
         const { flags } = this.parse(CardanoMetadataOracle);
         const blockfrostApiKey = process.env["BLOCKFROST_PROJECT_ID"];
         const testnet = flags.network === "testnet";
+
+        // if (!flags.address && !flags['seed-file']) {
+        //     throw Error(
+        //         "Missing flag --address or --seed-file"
+        //     );
+        // }
 
         if (!flags["cardano-node-socket"]) {
             // if --cardano-node-socket flag is not provided, use Blockfrost API
@@ -98,6 +100,30 @@ class CardanoMetadataOracle extends Command {
         }
 
         try {
+            let address = '';
+            let signKey;
+
+            if (flags['seed-file']) {
+                // console.log("Generating address, signing key from seed file");
+                const mnemonic = mnemonicFromFile(flags["seed-file"]);
+                const prvKey = mnemonicToPrivateKey(mnemonic);
+                const derivationPath = parseDerivationPath(
+                    flags["address-derivation-path"]
+                );
+                const derivation = deriveAddressPrvKey(
+                    prvKey,
+                    derivationPath,
+                    testnet
+                );
+                
+                address = derivation.address;
+                signKey = derivation.signKey;
+                console.log(`Generated address ${address}`);
+            } 
+            else if (flags.address) {
+                address = flags.address;
+            }
+
             const dataSources = parseFile(flags["origin-file"]);
 
             if (!dataSources) {
@@ -128,7 +154,7 @@ class CardanoMetadataOracle extends Command {
             if (flags.blockfrost && blockfrostApiKey) {
                 cli.action.start("Fetching UTXOs");
                 // console.log("Fetching UTXOs");
-                const fetchedUtxos = await fetchUtxos(flags.address);
+                const fetchedUtxos = await fetchUtxos(address);
                 if (fetchedUtxos.length > 0) {
                     utxos = fetchedUtxos;
                 } else {
@@ -139,28 +165,15 @@ class CardanoMetadataOracle extends Command {
 
             // cli.action.start("Building transaction");
             const { txId, txBody, txMetadata, info } = composeTransaction(
-                flags.address,
+                address,
                 composedMetadata,
                 utxos
             );
 
             renderTransactionTable(txId, info.totalFeesAmount.to_str(), info.usedUtxos);
 
-            if (!flags["skip-signing"] && flags["seed-file"]) {
+            if (signKey) {
                 // set prvKey for signing if seed-file was provided
-
-                // console.log("Generating signing key from seed file");
-                const mnemonic = mnemonicFromFile(flags["seed-file"]);
-                const prvKey = mnemonicToPrivateKey(mnemonic);
-                const derivationPath = parseDerivationPath(
-                    flags["address-derivation-path"]
-                );
-                const signKey = findPrvKeyForAddress(
-                    flags.address,
-                    prvKey,
-                    derivationPath,
-                    testnet
-                );
 
                 // console.log("Signing transaction");
                 const transaction = signTransaction(

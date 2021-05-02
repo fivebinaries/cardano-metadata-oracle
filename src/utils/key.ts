@@ -1,8 +1,8 @@
-import * as CardanoWasm from "@emurgo/cardano-serialization-lib-nodejs";
+import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 
 const splitDerivationPath = (path: string) => {
     try {
-        const tokens = path.split("/").map((t) => parseInt(t));
+        const tokens = path.split('/').map(t => parseInt(t));
         return tokens;
     } catch (err) {
         return null;
@@ -12,11 +12,11 @@ const splitDerivationPath = (path: string) => {
 export const parseDerivationPath = (path: string) => {
     const tokens = splitDerivationPath(path);
     if (!tokens) {
-        throw Error("Invalid derivation path.");
+        throw Error('Invalid derivation path.');
     }
 
     if (tokens.length !== 3) {
-        throw Error("Invalid number of tokens.");
+        throw Error('Invalid number of tokens.');
     }
     return tokens;
 };
@@ -25,11 +25,10 @@ export const harden = (num: number): number => {
     return 0x80000000 + num;
 };
 
-export const findPrvKeyForAddress = (
-    usedAddress: string,
+export const deriveAddressPrvKey = (
     bipPrvKey: CardanoWasm.Bip32PrivateKey,
     derivationPath: number[],
-    testnet?: boolean
+    testnet?: boolean,
 ) => {
     const networkId = testnet
         ? CardanoWasm.NetworkInfo.testnet().network_id()
@@ -53,15 +52,11 @@ export const findPrvKeyForAddress = (
 
     const baseAddress = CardanoWasm.BaseAddress.new(
         networkId,
-        CardanoWasm.StakeCredential.from_keyhash(
-            utxoKey.to_public().to_raw_key().hash()
-        ),
-        CardanoWasm.StakeCredential.from_keyhash(stakeKey.to_raw_key().hash())
+        CardanoWasm.StakeCredential.from_keyhash(utxoKey.to_public().to_raw_key().hash()),
+        CardanoWasm.StakeCredential.from_keyhash(stakeKey.to_raw_key().hash()),
     );
 
     const address = baseAddress.to_address().to_bech32();
-    if (usedAddress !== address) {
-        throw Error("Derivation path doesn't match the address");
-    }
-    return utxoKey.to_raw_key();
+    
+    return { signKey: utxoKey.to_raw_key(), address: address };
 };
