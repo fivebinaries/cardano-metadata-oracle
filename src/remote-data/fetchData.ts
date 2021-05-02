@@ -53,9 +53,10 @@ export const fetchDataSources = async (dataSource: DataSources) => {
             if (!enhancedDataSources[source]) {
                 enhancedDataSources[source] = [];
             }
+
             enhancedDataSources[source].push({
                 source: endpoint.name,
-                value: JSON.stringify(parsedData),
+                value: typeof parsedData === 'string' ? parsedData : JSON.stringify(parsedData),
             });
         }
     }
