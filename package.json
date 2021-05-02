@@ -11,7 +11,7 @@
         "version": "oclif-dev readme && git add README.md"
     },
     "dependencies": {
-        "@blockfrost/blockfrost-js": "^0.2.1",
+        "@blockfrost/blockfrost-js": "^0.2.2",
         "@emurgo/cardano-serialization-lib-nodejs": "^6.1.0",
         "@oclif/command": "^1",
         "@oclif/config": "^1",

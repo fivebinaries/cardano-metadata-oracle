@@ -13,6 +13,7 @@ import { writeToFile } from "./utils/file";
 import { Responses } from "@blockfrost/blockfrost-js";
 import { getExplorerLink } from "./utils/explorer";
 import { renderMetadata, renderTransactionTable } from "./utils/cli";
+import { setBlockfrostClient } from "./utils/blockfrostAPI";
 
 class CardanoMetadataOracle extends Command {
     static description = "describe the command here";
@@ -93,6 +94,7 @@ class CardanoMetadataOracle extends Command {
                     "Environment variable BLOCKFROST_PROJECT_ID not set"
                 );
             }
+            setBlockfrostClient(blockfrostApiKey, testnet);
         }
 
         try {

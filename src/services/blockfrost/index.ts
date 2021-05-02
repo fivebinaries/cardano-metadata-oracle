@@ -1,29 +1,32 @@
-import {blockfrostAPI} from '../../utils/blockfrostAPI';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { getClient } from '../../utils/blockfrostAPI';
 
 export const pushTransaction = async (transaction: Uint8Array) => {
+    const client = getClient();
     try {
-        const response = await blockfrostAPI.txSubmit(transaction);
+        const response = await client!.txSubmit(transaction);
         return response;
     } catch (err) {
-        if (err.response?.data) {
-            console.log(err.response?.data);
-            throw Error('Failed to push a transaction a network.');
+        if (err?.data) {
+            console.log(err?.data);
         } else {
-            throw err;
+            console.log(err);
         }
+        throw Error('Failed to push a transaction a network.');
     }
-}
+};
 
 export const fetchUtxos = async (address: string) => {
+    const client = getClient();
     try {
-        const response = await blockfrostAPI.addressesUtxosAll(address);
+        const response = await client!.addressesUtxosAll(address);
         return response;
     } catch (err) {
         if (err.response?.data) {
-            console.log(err.response?.data);
-            throw Error('Fetching UTXOs failed.');
+            console.log(err?.data);
         } else {
-            throw err;
+            console.log(err);
         }
+        throw Error('Fetching UTXOs failed.');
     }
-}
+};

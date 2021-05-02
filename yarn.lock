@@ -301,10 +301,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blockfrost/blockfrost-js@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-0.2.1.tgz#d09dffcd14be030c231064babd3be23632f8b495"
-  integrity sha512-gPBS0GIBX8Y006ChQc8VYUiLN6S1Wl0nIBKIohp186DR7W+N9po9dLK6ZN8WuaY6DoNo6lI8yQKOI0ivAKogeA==
+"@blockfrost/blockfrost-js@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-0.2.2.tgz#d8761ebca1ac235d39fe99d1605fd58cf5c9c45a"
+  integrity sha512-P3qagdo6UCoGZdb8lNp90TTCCWcSYZPYDbRVV4jbFD1CmuWRLvyvbaHcm1Ig8U9h5qwaIFgpfIG/Jr7gblBgww==
   dependencies:
     "@blockfrost/openapi" "0.1.12"
     "@yarnpkg/pnpify" "^2.4.0"

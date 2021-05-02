@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 
-if (!process.env.BLOCKFROST_PROJECT_ID) {
-    throw Error('Specify BlockFrostAPI key')
+let client: BlockFrostAPI | null = null;
+
+export const setBlockfrostClient = (projectId: string, testnet?: boolean) => {
+  if (!client) {
+    client = new BlockFrostAPI({
+      projectId,
+      isTestnet: testnet,
+    });
+  } 
 }
 
-const blockfrostAPI = new BlockFrostAPI({
-  projectId: process.env.BLOCKFROST_PROJECT_ID,
-});
-
-export { blockfrostAPI };
+export const getClient = () => client;
