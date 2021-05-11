@@ -45,4 +45,16 @@ If you are using NixOS, you probably know how to add these as your binary caches
 
 ### Docker
 
+First build the docker container, run this within the repository:
+
+```
+$ docker build . -t cardano-metadata-oracle
+```
+
+After building your container, just run it:
+
+```
+$ docker run cardano-metadata-oracle --help
+```
+
 ## Usage
