@@ -47,7 +47,7 @@ const validateOriginFile = (data: any) => {
 };
 
 export const parseFile = (filePath: string): DataSources | null => {
-    try {
+
         if (!fs.existsSync(filePath)) {
             throw Error("Origin file does not exists.");
         }
@@ -60,7 +60,4 @@ export const parseFile = (filePath: string): DataSources | null => {
             throw Error("Invalid data in origin file.");
         }
         return data as DataSources;
-    } catch (e) {
-        throw e;
-    }
 };
