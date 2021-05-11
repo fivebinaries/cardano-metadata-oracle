@@ -54,7 +54,7 @@
     "keywords": [
         "oclif"
     ],
-    "license": "MIT",
+    "license": "ASL2",
     "main": "lib/index.js",
     "oclif": {
         "bin": "cardano-metadata-oracle"
