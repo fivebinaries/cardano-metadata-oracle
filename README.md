@@ -69,7 +69,7 @@ For lightweight Cardano metadata node, you need to use a remote API such as [Blo
 export BLOCKFROST_PROJECT_ID=your_blockfrost_project_id
 ```
 
-To post your datapoint to the Cardano network, you need to provide at least the `origin-file` and the `seed-file` of the wallet containing the funds to do posting. You can use the files in the `test` folder. 
+To post your datapoint to the Cardano network, you need to provide at least `origin-file` and `seed-file` of the wallet containing the funds to do posting. You can use files in the `test` folder. 
 
 ```console
 $ cardano-metadata-oracle --origin-file ./test/origin.yml --seed-file ./test/seed.txt  --network=testnet
