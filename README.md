@@ -25,8 +25,8 @@ This repository contains the code and configuration files of the metadata oracle
 
 ### Planning
 
-* Support for full local Cardano node (using `cardano-cli`) ([#7](https://github.com/fivebinaries/cardano-metadata-oracle/issues/7))
-* Prometheus style endpoint for monitoring and Grafana integration ([#6](https://github.com/fivebinaries/cardano-metadata-oracle/issues/6))
+* Support for full local Cardano node (using `cardano-cli`) ([#6](https://github.com/fivebinaries/cardano-metadata-oracle/issues/6))
+* Prometheus style endpoint for monitoring and Grafana integration ([#7](https://github.com/fivebinaries/cardano-metadata-oracle/issues/7))
 
 ## Installation
 
