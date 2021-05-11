@@ -8,6 +8,26 @@ ADAUSD:
     path: '$.market_data.current_price.usd'
     abort_on_failure: true
   - name: cryptoCompare
-    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA,BTC,AGI&tsyms=BTC,USD,EUR,JPY,CAD&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
+    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=USD&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
     path: '$.ADA.USD'
-
+ADAEUR:
+  - name: coinGecko
+    source: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: '$.market_data.current_price.eur'
+  - name: cryptoCompare
+    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=EUR&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
+    path: '$.ADA.EUR'
+ADAJPY:
+  - name: coinGecko
+    source: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: '$.market_data.current_price.jpy'
+  - name: cryptoCompare
+    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=JPY&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
+    path: '$.ADA.JPY'
+ADABTC:
+  - name: coinGecko
+    source: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: '$.market_data.current_price.btc'
+  - name: cryptoCompare
+    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=BTC&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
+    path: '$.ADA.BTC'
