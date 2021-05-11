@@ -1,6 +1,9 @@
 
 <img src=".github/cardano_metadata_oracle_logo.png" align="right" height="200" />
 
+![master build ci](https://github.com/fivebinaries/cardano-metadata-oracle/actions/workflows/build.yml/badge.svg?branch=master) <a href="https://fivebinaries.com/"><img src="https://img.shields.io/badge/made%20by-Five%20Binaries-darkviolet.svg?style=flat-square" /></a>
+
+
 # Cardano Metadata Oracle
 
 This repository contains the code and configuration files of the metadata oracle for Cardano.
