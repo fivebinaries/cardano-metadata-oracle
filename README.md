@@ -15,8 +15,8 @@ This repository contains the code and configuration files of the metadata oracle
 
 ## Key Features
 
-* Data source definitions templates that are easy to share within the community
-* Fetching and scraping of data with error handling and retries
+* Data source definition templates that are easy to share within the community
+* Fetching and scraping data with error handling and retries
 * Transaction construction, including dynamic fee estimation
 * Support for remote API [Blockfrost.io](https://blockfrost.io)
 
@@ -46,7 +46,7 @@ If you are using NixOS, you probably know how to add these as your binary caches
 
 ### Docker
 
-First build the docker container, run this within the repository:
+First, build the docker container and then run this within the repository:
 
 ```console
 $ docker build . -t cardano-metadata-oracle
@@ -60,13 +60,13 @@ $ docker run cardano-metadata-oracle --help
 
 ## Usage
 
-For light-weight Cardano metadata node, you need to use a remote API such as [Blockfrost.io](https://blockfrost.io). Go to [their website](https://blockfrost.io/dashboard) and retrive a Project ID for the specific network you are looking to use (Mainnet or Testnet).
+For lightweight Cardano metadata node, you need to use a remote API such as [Blockfrost.io](https://blockfrost.io). Go to [their website](https://blockfrost.io/dashboard) and retrieve a `project_id` for the specific network you want to use (Mainnet or Testnet).
 
 ```bash
 export BLOCKFROST_PROJECT_ID=your_blockfrost_project_id
 ```
 
-To post your datapoint to the Cardano network, you need to provide at least the `origin-file` and the `seed-file` of the wallet contaning the funds to do posting. You can use the files in the `test` folder. 
+To post your datapoint to the Cardano network, you need to provide at least the `origin-file` and the `seed-file` of the wallet containing the funds to do posting. You can use the files in the `test` folder. 
 
 ```console
 $ cardano-metadata-oracle --origin-file ./test/origin.yml --seed-file ./test/seed.txt  --network=testnet
@@ -91,7 +91,7 @@ Transaction submitted successfully: https://explorer.cardano-testnet.iohkdev.io/
 
 ### Origins
 
-The metadata oracle node needs a list of origins from there to fetch the data. The source of this file is specified using`--seed-file`. It is a simple YAML file, using the `ticker` as the top element with a list sources for given ticker. In the example below, we define two sources for ticker `ADAUSD`. The `path` proprieties specificies the position wihtin the _json_ document.
+The metadata oracle node needs a list of origins from where to fetch the data. The source of this file is specified using`--seed-file`. It is a simple YAML file, using the `ticker` as the top element with a list sources for given ticker. In the example below, we define two sources for ticker `ADAUSD`. The `path` proprieties specifies the position within the _json_ document.
 
 ```yarm
 ADAUSD:
@@ -108,7 +108,7 @@ Have a look in the [`examples/`](./examples/) directory for inspiration.
 
 ### Wallet
 
-The Cardano metadata node by default try to sign and post the transaction to the blockchain. In order to do this, we need a wallet withs funds. This is being defined by the `--seed-file` switch pointing to the _ED25519-BIP32_ seed word phrase. 
+The Cardano metadata node by default tries to sign and post the transaction to the blockchain. In order to do this, we need a wallet with funds. This is being defined by the `--seed-file` switch pointing to the _ED25519-BIP32_ seed word phrase. 
 
 Keep sane permissions on this file as it contains sensitive information. Also, it is best practice to keep only a small amount of funds on this wallet and top it up from time to time.
 
@@ -116,8 +116,8 @@ If you want to construct only a transaction and sign it offline, use the `--addr
 
 ### Cardano network (optional)
 
-By default, the node is using the Cardano mainnet, to post to the Cardano testnet, use the `network=testnet` switch.
+By default, the node uses Cardano mainnet network. To post to testnet network, use the `network=testnet` switch.
 
 ### Metadata label (optional)
 
-We're using by default the matadata label `1968` as per the [nut.link](https://nut.link) specification. If you have a specific use case, it might be a good idea to use a different label.
+By default, we're using matadata label `1968` as per [nut.link](https://nut.link) specification. If you have a specific use case, it might be a good idea to use a different label.
