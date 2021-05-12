@@ -9,7 +9,7 @@ const splitDerivationPath = (path: string) => {
     }
 };
 
-export const parseDerivationPath = (path: string) => {
+export const parseDerivationPath = (path: string): number[] => {
     const tokens = splitDerivationPath(path);
     if (!tokens) {
         throw Error('Invalid derivation path.');

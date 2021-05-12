@@ -23,7 +23,9 @@ const parseDataFromResponse = (data: any, path: string | undefined) => {
     return parsedData;
 };
 
-export const fetchDataSources = async (dataSource: DataSources) => {
+export const fetchDataSources = async (
+    dataSource: DataSources,
+): Promise<RemoteData | null> => {
     const enhancedDataSources: RemoteData = {};
 
     for (const source in dataSource) {

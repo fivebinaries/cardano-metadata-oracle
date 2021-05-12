@@ -4,7 +4,7 @@ import { RemoteData } from '../types';
 export const composeMetadata = (
     remoteData: RemoteData,
     metadataLabel: number,
-) => {
+): CardanoWasm.TransactionMetadatum => {
     const obj = {
         [metadataLabel]: remoteData,
     };

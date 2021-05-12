@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 
-export const writeToFile = (filePath: string, data: Uint8Array) => {
+export const writeToFile = (filePath: string, data: Uint8Array): void => {
     try {
         writeFileSync(filePath, data);
     } catch (err) {
