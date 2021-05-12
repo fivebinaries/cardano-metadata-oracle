@@ -1,11 +1,11 @@
-import { cli } from "cli-ux";
-import {Responses} from '@blockfrost/blockfrost-js';
-import { RemoteData } from "../types";
+import { cli } from 'cli-ux';
+import { Responses } from '@blockfrost/blockfrost-js';
+import { RemoteData } from '../types';
 
 export const renderTransactionTable = (
     txId: string,
     fee: string,
-    usedUtxos: Responses['address_utxo_content']
+    usedUtxos: Responses['address_utxo_content'],
 ) => {
     console.log();
     cli.table(
@@ -18,43 +18,43 @@ export const renderTransactionTable = (
         ],
         {
             txId: {
-                header: "Transaction ID",
+                header: 'Transaction ID',
                 minWidth: 30,
             },
             fee: {
                 minWidth: 7,
             },
             usedUtxos: {
-                header: "Used UTXOs",
-                get: (row) => row.usedUtxos.map((u) => u.tx_hash).join("\n"),
+                header: 'Used UTXOs',
+                get: row => row.usedUtxos.map(u => u.tx_hash).join('\n'),
             },
         },
-        {}
+        {},
     );
     console.log();
 };
 
-export const renderMetadata = (
-    data: RemoteData,
-) => {
-    const mappedData = Object.keys(data).map(k => data[k].map(e => ({...e, sourceName: k}))).flatMap(u => u)
+export const renderMetadata = (data: RemoteData) => {
+    const mappedData = Object.keys(data)
+        .map(k => data[k].map(e => ({ ...e, sourceName: k })))
+        .flatMap(u => u);
     console.log();
     cli.table(
         mappedData,
         {
             sourceName: {
-                header: "Source",
+                header: 'Source',
                 minWidth: 14,
             },
             source: {
-                header: "Endpoint Name",
+                header: 'Endpoint Name',
                 minWidth: 18,
             },
             value: {
                 minWidth: 7,
             },
         },
-        {}
+        {},
     );
     console.log();
 };

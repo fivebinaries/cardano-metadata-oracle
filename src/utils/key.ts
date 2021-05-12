@@ -52,11 +52,13 @@ export const deriveAddressPrvKey = (
 
     const baseAddress = CardanoWasm.BaseAddress.new(
         networkId,
-        CardanoWasm.StakeCredential.from_keyhash(utxoKey.to_public().to_raw_key().hash()),
+        CardanoWasm.StakeCredential.from_keyhash(
+            utxoKey.to_public().to_raw_key().hash(),
+        ),
         CardanoWasm.StakeCredential.from_keyhash(stakeKey.to_raw_key().hash()),
     );
 
     const address = baseAddress.to_address().to_bech32();
-    
+
     return { signKey: utxoKey.to_raw_key(), address: address };
 };

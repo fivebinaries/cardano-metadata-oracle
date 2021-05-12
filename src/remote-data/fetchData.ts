@@ -1,6 +1,6 @@
-import { DataSourceEndpoint, DataSources, RemoteData } from "../types";
-import axios from "axios";
-import * as jp from "jsonpath";
+import { DataSourceEndpoint, DataSources, RemoteData } from '../types';
+import axios from 'axios';
+import * as jp from 'jsonpath';
 
 const fetchData = async (entry: DataSourceEndpoint) => {
     try {
@@ -33,7 +33,7 @@ export const fetchDataSources = async (dataSource: DataSources) => {
             const data = await fetchData(endpoint);
             if (!data) {
                 console.log(
-                    `Failed to fetch ${endpoint.name} from ${endpoint.source}`
+                    `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
                 );
                 if (endpoint.abort_on_failure) {
                     return null;
@@ -43,7 +43,7 @@ export const fetchDataSources = async (dataSource: DataSources) => {
             const parsedData = parseDataFromResponse(data, endpoint.path);
             if (!parsedData || parsedData.length === 0) {
                 console.log(
-                    `Failed to parse data ${endpoint.name} from ${endpoint.source}`
+                    `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
                 );
                 if (endpoint.abort_on_failure) {
                     return null;
@@ -56,7 +56,10 @@ export const fetchDataSources = async (dataSource: DataSources) => {
 
             enhancedDataSources[source].push({
                 source: endpoint.name,
-                value: typeof parsedData === 'string' ? parsedData : JSON.stringify(parsedData),
+                value:
+                    typeof parsedData === 'string'
+                        ? parsedData
+                        : JSON.stringify(parsedData),
             });
         }
     }

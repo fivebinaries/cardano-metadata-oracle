@@ -11,7 +11,7 @@ export interface DataSources {
 
 export interface RemoteData {
     [sourceName: string]: {
-        source: DataSourceEndpoint['name'],
-        value: any,
+        source: DataSourceEndpoint['name'];
+        value: any;
     }[];
 }
