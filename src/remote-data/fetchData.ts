@@ -5,7 +5,9 @@ import * as jp from 'jsonpath';
 
 const fetchData = async (entry: DataSourceEndpoint) => {
     try {
-        const res = await axios.get(entry.source);
+        const res = await axios.get(entry.source, {
+            headers: { 'User-Agent': 'cardano-metadata-oracle' },
+        });
         return res.data;
     } catch (err) {
         if (axios.isAxiosError(err)) {
