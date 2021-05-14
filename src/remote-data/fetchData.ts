@@ -3,6 +3,9 @@ import axios from 'axios';
 import * as chalk from 'chalk';
 import * as jp from 'jsonpath';
 
+export const countBytesInString = (input: string) =>
+    encodeURI(input).split(/%..|./).length - 1;
+
 const fetchData = async (entry: DataSourceEndpoint) => {
     try {
         const res = await axios.get(entry.source, {
@@ -36,7 +39,23 @@ const parseDataFromResponse = (data: any, path: string | undefined) => {
     try {
         let parsedData = jp.query(data, path);
         parsedData = parsedData.length === 1 ? parsedData[0] : parsedData;
-        return parsedData;
+
+        const stringifiedData =
+            typeof parsedData === 'string'
+                ? parsedData
+                : JSON.stringify(parsedData);
+
+        const size = countBytesInString(stringifiedData);
+        if (size > 64) {
+            // there is 64B limit for metadata string
+            console.log(
+                chalk.red(
+                    `Parsed string too long: ${stringifiedData} ${size}B, max = 64B`,
+                ),
+            );
+            return null;
+        }
+        return stringifiedData;
     } catch (err) {
         return null;
     }
@@ -74,6 +93,7 @@ export const fetchDataSources = async (
                 if (endpoint.abort_on_failure) {
                     return null;
                 }
+                continue;
             }
             // Create an object where key is name for the data source, source field is name for given endpoint, value stores fetched and parsed data
             if (!enhancedDataSources[source]) {
@@ -82,10 +102,7 @@ export const fetchDataSources = async (
 
             enhancedDataSources[source].push({
                 source: endpoint.name,
-                value:
-                    typeof parsedData === 'string'
-                        ? parsedData
-                        : JSON.stringify(parsedData),
+                value: parsedData,
             });
         }
     }
