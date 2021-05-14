@@ -3,10 +3,10 @@ import axios from 'axios';
 import * as chalk from 'chalk';
 import * as jp from 'jsonpath';
 
-export const countBytesInString = (input: string) =>
+export const countBytesInString = (input: string): number =>
     encodeURI(input).split(/%..|./).length - 1;
 
-const fetchData = async (entry: DataSourceEndpoint) => {
+const fetchData = async (entry: DataSourceEndpoint): Promise<unknown> => {
     try {
         const res = await axios.get(entry.source, {
             headers: { 'User-Agent': 'cardano-metadata-oracle' },
@@ -30,15 +30,16 @@ const fetchData = async (entry: DataSourceEndpoint) => {
     }
 };
 
-const parseDataFromResponse = (data: any, path: string | undefined) => {
-    if (!path) {
-        // No parsing needed if there is no json path provided
-        return data;
-    }
-
+const parseDataFromResponse = (
+    data: unknown,
+    path: string | undefined,
+): string | null => {
     try {
-        let parsedData = jp.query(data, path);
-        parsedData = parsedData.length === 1 ? parsedData[0] : parsedData;
+        let parsedData = path ? jp.query(data, path) : data;
+        parsedData =
+            Array.isArray(parsedData) && parsedData.length === 1
+                ? parsedData[0]
+                : parsedData;
 
         const stringifiedData =
             typeof parsedData === 'string'
@@ -84,7 +85,7 @@ export const fetchDataSources = async (
             }
 
             const parsedData = parseDataFromResponse(data, endpoint.path);
-            if (!parsedData || parsedData.length === 0) {
+            if (!parsedData) {
                 console.log(
                     chalk.red(
                         `Failed to parse data ${endpoint.name} from ${endpoint.source}`,

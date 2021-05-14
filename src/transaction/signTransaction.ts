@@ -4,7 +4,7 @@ export const signTransaction = (
     txBody: CardanoWasm.TransactionBody,
     txMetadata: CardanoWasm.TransactionMetadata,
     signKey: CardanoWasm.PrivateKey,
-) => {
+): CardanoWasm.Transaction => {
     const txHash = CardanoWasm.hash_transaction(txBody);
     const witnesses = CardanoWasm.TransactionWitnessSet.new();
     const vkeyWitnesses = CardanoWasm.Vkeywitnesses.new();

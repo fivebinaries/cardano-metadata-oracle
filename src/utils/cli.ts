@@ -6,7 +6,7 @@ export const renderTransactionTable = (
     txId: string,
     fee: string,
     usedUtxos: Responses['address_utxo_content'],
-) => {
+): void => {
     console.log();
     cli.table(
         [
@@ -34,7 +34,7 @@ export const renderTransactionTable = (
     console.log();
 };
 
-export const renderMetadata = (data: RemoteData) => {
+export const renderMetadata = (data: RemoteData): void => {
     const mappedData = Object.keys(data)
         .map(k => data[k].map(e => ({ ...e, sourceName: k })))
         .flatMap(u => u);

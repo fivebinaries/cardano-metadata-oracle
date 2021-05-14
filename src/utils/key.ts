@@ -29,7 +29,10 @@ export const deriveAddressPrvKey = (
     bipPrvKey: CardanoWasm.Bip32PrivateKey,
     derivationPath: number[],
     testnet?: boolean,
-) => {
+): {
+    signKey: CardanoWasm.PrivateKey;
+    address: string;
+} => {
     const networkId = testnet
         ? CardanoWasm.NetworkInfo.testnet().network_id()
         : CardanoWasm.NetworkInfo.mainnet().network_id();

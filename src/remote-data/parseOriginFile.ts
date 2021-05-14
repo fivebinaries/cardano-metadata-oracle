@@ -31,7 +31,7 @@ const schema = {
     },
 };
 
-const validateOriginFile = (data: any) => {
+const validateOriginFile = (data: unknown) => {
     const ajv = new Ajv({ allErrors: true });
     const validate = ajv.compile(schema);
     const valid = validate(data);

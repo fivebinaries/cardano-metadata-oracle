@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Responses } from '@blockfrost/blockfrost-js';
 import { getClient } from '../../utils/blockfrostAPI';
 
-export const pushTransaction = async (transaction: Uint8Array) => {
+export const pushTransaction = async (
+    transaction: Uint8Array,
+): Promise<string> => {
     const client = getClient();
     try {
         const response = await client!.txSubmit(transaction);
@@ -16,7 +19,9 @@ export const pushTransaction = async (transaction: Uint8Array) => {
     }
 };
 
-export const fetchUtxos = async (address: string) => {
+export const fetchUtxos = async (
+    address: string,
+): Promise<Responses['address_utxo_content']> => {
     const client = getClient();
     try {
         const response = await client!.addressesUtxosAll(address);
