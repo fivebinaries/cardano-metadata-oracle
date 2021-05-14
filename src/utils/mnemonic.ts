@@ -7,11 +7,12 @@ export const mnemonicFromFile = (filepath: string): string => {
     if (!data) {
         throw Error(`Can't parse mnemonic from '${filepath}.`);
     }
-    const isValid = validateMnemonic(data);
+    const mnemonic = data.trim();
+    const isValid = validateMnemonic(mnemonic);
     if (!isValid) {
         throw Error(`Mnemonic is not valid.`);
     }
-    return data.trim();
+    return mnemonic;
 };
 
 export const mnemonicToPrivateKey = (
