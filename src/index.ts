@@ -97,121 +97,118 @@ class CardanoMetadataOracle extends Command {
             setBlockfrostClient(blockfrostApiKey, testnet);
         }
 
-        try {
-            let address = '';
-            let signKey;
+        let address = '';
+        let signKey;
 
-            if (flags['seed-file']) {
-                // console.log("Generating address, signing key from seed file");
-                const mnemonic = mnemonicFromFile(flags['seed-file']);
-                const prvKey = mnemonicToPrivateKey(mnemonic);
-                const derivationPath = parseDerivationPath(
-                    flags['address-derivation-path'],
-                );
-                const derivation = deriveAddressPrvKey(
-                    prvKey,
-                    derivationPath,
-                    testnet,
-                );
+        if (flags['seed-file']) {
+            // console.log("Generating address, signing key from seed file");
+            const mnemonic = mnemonicFromFile(flags['seed-file']);
+            const prvKey = mnemonicToPrivateKey(mnemonic);
+            const derivationPath = parseDerivationPath(
+                flags['address-derivation-path'],
+            );
+            const derivation = deriveAddressPrvKey(
+                prvKey,
+                derivationPath,
+                testnet,
+            );
 
-                address = derivation.address;
-                signKey = derivation.signKey;
-                console.log(`Generated address ${address}`);
-            } else if (flags.address) {
-                address = flags.address;
-            }
+            address = derivation.address;
+            signKey = derivation.signKey;
+            console.log(`Generated address ${address}`);
+        } else if (flags.address) {
+            address = flags.address;
+        }
 
-            const dataSources = parseFile(flags['origin-file']);
+        const dataSources = parseFile(flags['origin-file']);
 
-            if (!dataSources) {
-                throw Error('No data sources specified in origin file.');
-            }
+        if (!dataSources) {
+            throw Error('No data sources specified in origin file.');
+        }
 
-            // Fetch metadata from remote endpoints
-            cli.action.start('Fetching data from sources in origin file');
-            // console.log("Fetching data from sources in origin file");
-            const fetchedData = await fetchDataSources(dataSources);
-            if (!fetchedData) {
-                throw Error(
-                    'No data downloaded from sources defined in origin file',
-                );
+        // Fetch metadata from remote endpoints
+        cli.action.start('Fetching data from sources in origin file');
+        // console.log("Fetching data from sources in origin file");
+        const fetchedData = await fetchDataSources(dataSources);
+        if (!fetchedData) {
+            throw Error(
+                'No data downloaded from sources defined in origin file',
+            );
+        }
+        cli.action.stop();
+
+        renderMetadata(fetchedData);
+
+        // Compose metadata
+        const composedMetadata = composeMetadata(
+            fetchedData,
+            flags['metadata-label'],
+        );
+
+        // Fetch utxos
+        let utxos: Responses['address_utxo_content'] = [];
+        if (flags.blockfrost && blockfrostApiKey) {
+            cli.action.start('Fetching UTXOs');
+            // console.log("Fetching UTXOs");
+            const fetchedUtxos = await fetchUtxos(address);
+            if (fetchedUtxos.length > 0) {
+                utxos = fetchedUtxos;
+            } else {
+                throw Error('No UTXOs available for the address.');
             }
             cli.action.stop();
-
-            renderMetadata(fetchedData);
-
-            // Compose metadata
-            const composedMetadata = composeMetadata(
-                fetchedData,
-                flags['metadata-label'],
-            );
-
-            // Fetch utxos
-            let utxos: Responses['address_utxo_content'] = [];
-            if (flags.blockfrost && blockfrostApiKey) {
-                cli.action.start('Fetching UTXOs');
-                // console.log("Fetching UTXOs");
-                const fetchedUtxos = await fetchUtxos(address);
-                if (fetchedUtxos.length > 0) {
-                    utxos = fetchedUtxos;
-                } else {
-                    throw Error('No UTXOs available for the address.');
-                }
-                cli.action.stop();
-            }
-
-            // cli.action.start("Building transaction");
-            const { txId, txBody, txMetadata, info } = composeTransaction(
-                address,
-                composedMetadata,
-                utxos,
-            );
-
-            renderTransactionTable(
-                txId,
-                info.totalFeesAmount.to_str(),
-                info.usedUtxos,
-            );
-
-            if (signKey) {
-                // set prvKey for signing if seed-file was provided
-
-                // console.log("Signing transaction");
-                const transaction = signTransaction(
-                    txBody,
-                    txMetadata,
-                    signKey,
-                );
-
-                // Write transaction to a file
-                if (flags['write-to-file']) {
-                    writeToFile(flags['write-to-file'], transaction.to_bytes());
-                }
-
-                // Push transaction to network
-                if (flags['blockfrost'] && blockfrostApiKey) {
-                    const txId = await pushTransaction(transaction.to_bytes());
-                    if (txId) {
-                        console.log();
-                        console.log(
-                            chalk.green(
-                                `Transaction submitted successfully: ${getExplorerLink(
-                                    txId,
-                                    testnet,
-                                )}`,
-                            ),
-                        );
-                    }
-                }
-            } else {
-                // Write draft ttx to a file
-                if (flags['write-to-file']) {
-                    writeToFile(flags['write-to-file'], txBody.to_bytes());
-                }
-            }
-        } catch (err) {
-            console.log(chalk.red(err));
         }
+
+        // cli.action.start("Building transaction");
+        const { txId, txBody, txMetadata, info } = composeTransaction(
+            address,
+            composedMetadata,
+            utxos,
+        );
+
+        renderTransactionTable(
+            txId,
+            info.totalFeesAmount.to_str(),
+            info.usedUtxos,
+        );
+
+        if (signKey) {
+            // set prvKey for signing if seed-file was provided
+
+            // console.log("Signing transaction");
+            const transaction = signTransaction(txBody, txMetadata, signKey);
+
+            // Write transaction to a file
+            if (flags['write-to-file']) {
+                writeToFile(flags['write-to-file'], transaction.to_bytes());
+            }
+
+            // Push transaction to network
+            if (flags['blockfrost'] && blockfrostApiKey) {
+                const txId = await pushTransaction(transaction.to_bytes());
+                if (txId) {
+                    console.log();
+                    console.log(
+                        chalk.green(
+                            `Transaction submitted successfully: ${getExplorerLink(
+                                txId,
+                                testnet,
+                            )}`,
+                        ),
+                    );
+                }
+            }
+        } else {
+            // Write draft ttx to a file
+            if (flags['write-to-file']) {
+                writeToFile(flags['write-to-file'], txBody.to_bytes());
+            }
+        }
+    }
+
+    async catch(error: unknown): Promise<void> {
+        console.log(chalk.red(error));
+        process.exit(1);
     }
 }
 
