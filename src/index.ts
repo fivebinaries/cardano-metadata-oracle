@@ -71,7 +71,7 @@ class CardanoMetadataOracle extends Command {
         }),
     };
 
-    async run() {
+    async run(): Promise<void> {
         const { flags } = this.parse(CardanoMetadataOracle);
         const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'];
         const testnet = flags.network === 'testnet';

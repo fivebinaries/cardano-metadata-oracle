@@ -1,26 +1,65 @@
 import { DataSourceEndpoint, DataSources, RemoteData } from '../types';
 import axios from 'axios';
+import * as chalk from 'chalk';
 import * as jp from 'jsonpath';
 
-const fetchData = async (entry: DataSourceEndpoint) => {
+export const countBytesInString = (input: string): number =>
+    encodeURI(input).split(/%..|./).length - 1;
+
+const fetchData = async (entry: DataSourceEndpoint): Promise<unknown> => {
     try {
-        const res = await axios.get(entry.source);
+        const res = await axios.get(entry.source, {
+            headers: { 'User-Agent': 'cardano-metadata-oracle' },
+        });
         return res.data;
     } catch (err) {
-        console.log(err);
+        if (axios.isAxiosError(err)) {
+            if (err.response) {
+                console.log(
+                    chalk.red(
+                        `Error Response: ${err.response.status} ${err.response.statusText}`,
+                    ),
+                );
+            } else if (err.request) {
+                console.log(chalk.red(err.request));
+            }
+        } else {
+            console.log(chalk.red(err.message));
+        }
         return null;
     }
 };
 
-const parseDataFromResponse = (data: any, path: string | undefined) => {
-    if (!path) {
-        // No parsing needed if there is no json path provided
-        return data;
-    }
+const parseDataFromResponse = (
+    data: unknown,
+    path: string | undefined,
+): string | null => {
+    try {
+        let parsedData = path ? jp.query(data, path) : data;
+        parsedData =
+            Array.isArray(parsedData) && parsedData.length === 1
+                ? parsedData[0]
+                : parsedData;
 
-    let parsedData = jp.query(data, path);
-    parsedData = parsedData.length === 1 ? parsedData[0] : parsedData;
-    return parsedData;
+        const stringifiedData =
+            typeof parsedData === 'string'
+                ? parsedData
+                : JSON.stringify(parsedData);
+
+        const size = countBytesInString(stringifiedData);
+        if (size > 64) {
+            // there is 64B limit for metadata string
+            console.log(
+                chalk.red(
+                    `Parsed string too long: ${stringifiedData} ${size}B, max = 64B`,
+                ),
+            );
+            return null;
+        }
+        return stringifiedData;
+    } catch (err) {
+        return null;
+    }
 };
 
 export const fetchDataSources = async (
@@ -35,21 +74,27 @@ export const fetchDataSources = async (
             const data = await fetchData(endpoint);
             if (!data) {
                 console.log(
-                    `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
+                    chalk.red(
+                        `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
+                    ),
                 );
                 if (endpoint.abort_on_failure) {
                     return null;
                 }
+                continue;
             }
 
             const parsedData = parseDataFromResponse(data, endpoint.path);
-            if (!parsedData || parsedData.length === 0) {
+            if (!parsedData) {
                 console.log(
-                    `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
+                    chalk.red(
+                        `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
+                    ),
                 );
                 if (endpoint.abort_on_failure) {
                     return null;
                 }
+                continue;
             }
             // Create an object where key is name for the data source, source field is name for given endpoint, value stores fetched and parsed data
             if (!enhancedDataSources[source]) {
@@ -58,10 +103,7 @@ export const fetchDataSources = async (
 
             enhancedDataSources[source].push({
                 source: endpoint.name,
-                value:
-                    typeof parsedData === 'string'
-                        ? parsedData
-                        : JSON.stringify(parsedData),
+                value: parsedData,
             });
         }
     }

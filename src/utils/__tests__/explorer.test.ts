@@ -1,4 +1,4 @@
-import * as utils from '../../../src/utils/explorer';
+import * as utils from '../explorer';
 
 describe('utils - explorer', () => {
     test('getExplorerLink', () => {
