@@ -1,7 +1,10 @@
-import * as CardanoWasm from "@emurgo/cardano-serialization-lib-nodejs";
-import { RemoteData } from "../types";
+import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
+import { RemoteData } from '../types';
 
-export const composeMetadata = (remoteData: RemoteData, metadataLabel: number) => {
+export const composeMetadata = (
+    remoteData: RemoteData,
+    metadataLabel: number,
+): CardanoWasm.TransactionMetadatum => {
     const obj = {
         [metadataLabel]: remoteData,
     };
@@ -9,10 +12,10 @@ export const composeMetadata = (remoteData: RemoteData, metadataLabel: number) =
     try {
         const metadata = CardanoWasm.encode_json_str_to_metadatum(
             JSON.stringify(obj),
-            CardanoWasm.MetadataJsonSchema.BasicConversions
+            CardanoWasm.MetadataJsonSchema.BasicConversions,
         );
-        return metadata
+        return metadata;
     } catch (err) {
-        throw Error("Failed to encode fetched data as metadata.");
+        throw Error('Failed to encode fetched data as metadata.');
     }
 };

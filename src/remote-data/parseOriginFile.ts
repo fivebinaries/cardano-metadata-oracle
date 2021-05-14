@@ -1,31 +1,31 @@
-import * as yaml from "js-yaml";
-import * as fs from "fs";
-import Ajv from "ajv";
-import { DataSources } from "../types";
+import * as yaml from 'js-yaml';
+import * as fs from 'fs';
+import Ajv from 'ajv';
+import { DataSources } from '../types';
 
 const schema = {
-    type: "object",
+    type: 'object',
     patternProperties: {
         //allow string keys
-        "^[a-zA-Z0-9]*$": {
-            type: "array",
+        '^[a-zA-Z0-9]*$': {
+            type: 'array',
             items: {
-                type: "object",
+                type: 'object',
                 properties: {
                     name: {
-                        type: "string",
+                        type: 'string',
                     },
                     source: {
-                        type: "string",
+                        type: 'string',
                     },
                     path: {
-                        type: "string",
+                        type: 'string',
                     },
                     abort_on_failure: {
-                        type: "boolean",
+                        type: 'boolean',
                     },
                 },
-                required: ["name", "source", "path"],
+                required: ['name', 'source', 'path'],
             },
         },
     },
@@ -47,20 +47,16 @@ const validateOriginFile = (data: any) => {
 };
 
 export const parseFile = (filePath: string): DataSources | null => {
-    try {
-        if (!fs.existsSync(filePath)) {
-            throw Error("Origin file does not exists.");
-        }
-        const fileContent = fs.readFileSync(filePath, "utf8");
-        const data = yaml.load(fileContent);
-
-        const result = validateOriginFile(data);
-        if (!result.success) {
-            console.log(result.errors);
-            throw Error("Invalid data in origin file.");
-        }
-        return data as DataSources;
-    } catch (e) {
-        throw e;
+    if (!fs.existsSync(filePath)) {
+        throw Error('Origin file does not exists.');
     }
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const data = yaml.load(fileContent);
+
+    const result = validateOriginFile(data);
+    if (!result.success) {
+        console.log(result.errors);
+        throw Error('Invalid data in origin file.');
+    }
+    return data as DataSources;
 };
