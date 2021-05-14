@@ -1,5 +1,6 @@
 import { DataSourceEndpoint, DataSources, RemoteData } from '../types';
 import axios from 'axios';
+import * as chalk from 'chalk';
 import * as jp from 'jsonpath';
 
 const fetchData = async (entry: DataSourceEndpoint) => {
@@ -7,7 +8,19 @@ const fetchData = async (entry: DataSourceEndpoint) => {
         const res = await axios.get(entry.source);
         return res.data;
     } catch (err) {
-        console.log(err);
+        if (axios.isAxiosError(err)) {
+            if (err.response) {
+                console.log(
+                    chalk.red(
+                        `Error Response: ${err.response.status} ${err.response.statusText}`,
+                    ),
+                );
+            } else if (err.request) {
+                console.log(chalk.red(err.request));
+            }
+        } else {
+            console.log(chalk.red(err.message));
+        }
         return null;
     }
 };
@@ -18,9 +31,13 @@ const parseDataFromResponse = (data: any, path: string | undefined) => {
         return data;
     }
 
-    let parsedData = jp.query(data, path);
-    parsedData = parsedData.length === 1 ? parsedData[0] : parsedData;
-    return parsedData;
+    try {
+        let parsedData = jp.query(data, path);
+        parsedData = parsedData.length === 1 ? parsedData[0] : parsedData;
+        return parsedData;
+    } catch (err) {
+        return null;
+    }
 };
 
 export const fetchDataSources = async (
@@ -35,17 +52,22 @@ export const fetchDataSources = async (
             const data = await fetchData(endpoint);
             if (!data) {
                 console.log(
-                    `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
+                    chalk.red(
+                        `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
+                    ),
                 );
                 if (endpoint.abort_on_failure) {
                     return null;
                 }
+                continue;
             }
 
             const parsedData = parseDataFromResponse(data, endpoint.path);
             if (!parsedData || parsedData.length === 0) {
                 console.log(
-                    `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
+                    chalk.red(
+                        `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
+                    ),
                 );
                 if (endpoint.abort_on_failure) {
                     return null;
