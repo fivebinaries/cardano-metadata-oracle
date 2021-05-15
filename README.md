@@ -68,27 +68,10 @@ For lightweight Cardano metadata node, you need to use a remote API such as [Blo
 ```bash
 export BLOCKFROST_PROJECT_ID=your_blockfrost_project_id
 ```
+<img src=".github/cardano_metadata_oracle.svg" align="center" />
+
 
 To post your datapoint to the Cardano network, you need to provide at least `origin-file` and `seed-file` of the wallet containing the funds to do posting. You can use files in the `test` folder. 
-
-```console
-$ cardano-metadata-oracle --origin-file ./test/origin.yml --seed-file ./test/seed.txt  --network=testnet
-Generated address addr_test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq2ytjqp
-Fetching data from sources in origin file... done
-
-Source        Endpoint Name     Value               
-ticker        source_name       fugiat veniam minus 
-ADAUSD        coinGecko         1.7                 
-ADAUSD        cryptoCompare     1.708               
-
-Fetching UTXOs... done
-
-Transaction ID                                                   Fee    Used UTXOs                                                       
-ab43a8826697ae7ec5927c129b21998d12a2842908bb45c12767d3aa333a2291 172321 8da90128724f2f662fba53a88c73624c94eb62860314c97194fa42e65b492b87 
-
-
-Transaction submitted successfully: https://explorer.cardano-testnet.iohkdev.io/en/transaction?id=ab43a8826697ae7ec5927c129b21998d12a2842908bb45c12767d3aa333a2291
-```
 
 ## Configuration
 
