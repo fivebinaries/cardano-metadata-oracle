@@ -301,12 +301,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blockfrost/blockfrost-js@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-0.2.2.tgz#d8761ebca1ac235d39fe99d1605fd58cf5c9c45a"
-  integrity sha512-P3qagdo6UCoGZdb8lNp90TTCCWcSYZPYDbRVV4jbFD1CmuWRLvyvbaHcm1Ig8U9h5qwaIFgpfIG/Jr7gblBgww==
+"@blockfrost/blockfrost-js@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@blockfrost/blockfrost-js/-/blockfrost-js-0.3.0.tgz#2b3b948fbeb2d75ecc465a03de6fc1ddcccf786c"
+  integrity sha512-TqfelsmpgMKfxuDE35GULYUs6/tSCWTS6GVeEi+Ys21TE2k8bWSswjwwUfgpm+uZi2ycmVgnTuxBU8ajk1e4Lw==
   dependencies:
-    "@blockfrost/openapi" "0.1.12"
+    "@blockfrost/openapi" "0.1.15"
     "@yarnpkg/pnpify" "^2.4.0"
     axios "^0.21.1"
     axios-retry "^3.1.9"
@@ -314,10 +314,10 @@
     rimraf "^3.0.2"
     url-join "^4.0.1"
 
-"@blockfrost/openapi@0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@blockfrost/openapi/-/openapi-0.1.12.tgz#501d8e6830c9306fe36e92b0641853fd0b200955"
-  integrity sha512-gG3s9R/P/sqAOgFXs1xTfeojUaIuVICgmKhXskjNutqVRvl89IRqGNsFuJBHXtGG++TKu0p9x34ROkb0YCTZaw==
+"@blockfrost/openapi@0.1.15":
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/@blockfrost/openapi/-/openapi-0.1.15.tgz#3cee07064ad65c07cd65aa36601d7ef1b9fa61d8"
+  integrity sha512-gSdon2er4K0F6jZETBmw7a9D8PiQYi0Bd4Q18j3UnJ0szqbQTJ9lyCoi0XeNwIJ6nQlWBMjOGRmmV4RysRHMFA==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
