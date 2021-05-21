@@ -92,7 +92,11 @@ export const composeTransaction = (
         );
         usedUtxos.push(utxo);
 
-        if (utxosTotalAmount >= totalFeesAmount.checked_add(minUtxoValue)) {
+        if (
+            utxosTotalAmount.compare(
+                totalFeesAmount.checked_add(minUtxoValue),
+            ) >= 0
+        ) {
             // we have enough utxos to cover fee + minUtxoOutput
             break;
         }
