@@ -8,7 +8,6 @@
 *-debug.log
 *-error.log
 /.nyc_output
-/.yarn/*
 /dist
 /lib
 /package-lock.json
