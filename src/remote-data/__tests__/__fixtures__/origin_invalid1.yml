@@ -1,0 +1,3 @@
+ticker:
+  - name: source_name
+    path: "$[2].title"

@@ -6,7 +6,9 @@ import * as jp from 'jsonpath';
 export const countBytesInString = (input: string): number =>
     encodeURI(input).split(/%..|./).length - 1;
 
-const fetchData = async (entry: DataSourceEndpoint): Promise<unknown> => {
+export const fetchData = async (
+    entry: DataSourceEndpoint,
+): Promise<unknown> => {
     try {
         const res = await axios.get(entry.source, {
             headers: { 'User-Agent': 'cardano-metadata-oracle' },
@@ -30,16 +32,19 @@ const fetchData = async (entry: DataSourceEndpoint): Promise<unknown> => {
     }
 };
 
-const parseDataFromResponse = (
+export const parseDataFromResponse = (
     data: unknown,
     path: string | undefined,
 ): string | null => {
     try {
-        let parsedData = path ? jp.query(data, path) : data;
-        parsedData =
-            Array.isArray(parsedData) && parsedData.length === 1
-                ? parsedData[0]
-                : parsedData;
+        let parsedData = data;
+        if (path) {
+            parsedData = jp.query(data, path, 1)[0];
+            if (!parsedData || parsedData === []) {
+                // no data at specified path
+                return null;
+            }
+        }
 
         const stringifiedData =
             typeof parsedData === 'string'
@@ -107,5 +112,8 @@ export const fetchDataSources = async (
             });
         }
     }
-    return enhancedDataSources;
+    // If no data were added to the object return null
+    return Object.keys(enhancedDataSources).length === 0
+        ? null
+        : enhancedDataSources;
 };
