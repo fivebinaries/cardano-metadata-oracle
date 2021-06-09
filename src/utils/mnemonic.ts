@@ -18,7 +18,7 @@ export const mnemonicFromFile = (filepath: string): string => {
 export const mnemonicToPrivateKey = (
     mnemonic: string,
 ): CardanoWasm.Bip32PrivateKey => {
-    const entropy = mnemonicToEntropy(mnemonic); // why trezor uses bip32.from_mnemonic_cardano
+    const entropy = mnemonicToEntropy(mnemonic);
 
     const rootKey = CardanoWasm.Bip32PrivateKey.from_bip39_entropy(
         Buffer.from(entropy, 'hex'),

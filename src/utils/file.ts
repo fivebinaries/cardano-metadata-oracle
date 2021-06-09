@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { writeFileSync } from 'fs';
 
 export const writeToFile = (filePath: string, data: Uint8Array): void => {

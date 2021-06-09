@@ -3,6 +3,11 @@ import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 const splitDerivationPath = (path: string) => {
     try {
         const tokens = path.split('/').map(t => parseInt(t));
+        tokens.forEach(t => {
+            if (Number.isNaN(t)) {
+                throw Error('Invalid path');
+            }
+        });
         return tokens;
     } catch (err) {
         return null;
@@ -21,7 +26,7 @@ export const parseDerivationPath = (path: string): number[] => {
     return tokens;
 };
 
-export const harden = (num: number): number => {
+const harden = (num: number): number => {
     return 0x80000000 + num;
 };
 
