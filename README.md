@@ -47,6 +47,12 @@ trusted-public-keys  = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcD
 
 If you are using NixOS, you probably know how to add these as your binary caches.
 
+After setting up your caches, you can build and run the metadata oracle as following:
+
+```console
+$ $(nix-build -A cardano-metadata-oracle --no-out-link)/bin/cardano-metadata-oracle
+```
+
 ### Docker
 
 First, build the docker container and then run this within the repository:
