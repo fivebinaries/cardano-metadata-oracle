@@ -1,17 +1,17 @@
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
-import { Responses } from '@blockfrost/blockfrost-js';
 import { sortUtxos } from '../utils/transaction';
+import { UTXO } from '../types';
 
 export const composeTransaction = (
     address: string,
     metadatum: CardanoWasm.TransactionMetadatum,
-    utxos: Responses['address_utxo_content'],
+    utxos: UTXO[],
 ): {
     txId: string;
     txBody: CardanoWasm.TransactionBody;
     txMetadata: CardanoWasm.TransactionMetadata;
     info: {
-        usedUtxos: Responses['address_utxo_content'];
+        usedUtxos: UTXO[];
         utxosTotalAmount: CardanoWasm.BigNum;
         totalFeesAmount: CardanoWasm.BigNum;
         outputAmount: CardanoWasm.BigNum;

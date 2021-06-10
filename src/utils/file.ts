@@ -1,7 +1,10 @@
 /* istanbul ignore file */
-import { writeFileSync } from 'fs';
+import { PathLike, writeFileSync } from 'fs';
 
-export const writeToFile = (filePath: string, data: Uint8Array): void => {
+export const writeToFile = (
+    filePath: PathLike | number,
+    data: string | NodeJS.ArrayBufferView,
+): void => {
     try {
         writeFileSync(filePath, data);
     } catch (err) {

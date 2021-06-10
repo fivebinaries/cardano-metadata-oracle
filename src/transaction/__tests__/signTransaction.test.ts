@@ -4,11 +4,10 @@ import * as fixtures from './__fixtures__';
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import { deriveAddressPrvKey } from '../../utils/key';
 
-const metadata = composeMetadata(fixtures.REMOTE_DATA, 1968);
-
 describe('utils - signTransaction', () => {
     fixtures.signTransaction.forEach(f => {
         test(f.description, () => {
+            const metadata = composeMetadata(f.txMetadata, 1968);
             const signedTx = utils.signTransaction(
                 CardanoWasm.TransactionBody.from_bytes(
                     Uint8Array.from(Buffer.from(f.txBody, 'hex')),
