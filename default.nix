@@ -1,6 +1,17 @@
-# This is a minimal `default.nix` by yarn-plugin-nixify. You can customize it
-# as needed, it will not be overwritten by the plugin.
-
 { pkgs ? import <nixpkgs> { } }:
 
-pkgs.callPackage ./yarn-project.nix { } { src = ./.; }
+rec {
+  cardano-metadata-oracle =
+    let
+      packageJSON = builtins.fromJSON (builtins.readFile ./package.json);
+      project = pkgs.callPackage ./yarn-project.nix { nodejs = pkgs.nodejs-14_x; } { src = pkgs.lib.cleanSource ./.; };
+    in
+    project.overrideAttrs (oldAttrs: rec {
+      name = "cardano-metadata-oracle";
+      version = packageJSON.version;
+      buildPhase = ''
+        cp -r . $out
+        ln -s $out/bin/run $out/bin/${name}
+      '';
+    });
+}
