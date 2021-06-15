@@ -11,10 +11,11 @@ export const fetchData = async (
     entry: DataSourceEndpoint,
     options?: { retry: boolean },
 ): Promise<unknown> => {
+    if (options?.retry) {
+        rax.attach();
+    }
+
     try {
-        if (options?.retry) {
-            rax.attach();
-        }
         const res = await axios.get(entry.source, {
             headers: { 'User-Agent': 'cardano-metadata-oracle' },
         });
