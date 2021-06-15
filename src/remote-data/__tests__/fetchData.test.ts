@@ -88,12 +88,10 @@ describe('fetchData', () => {
         });
     });
 
-    test('Should retry fetch after failed request', async () => {
-        const scope = nock('https://mockedanyway.com')
-            .get('/')
-            .reply(500)
-            .get('/')
-            .reply(429)
+    test('fetchData: failed request, retry=true', async () => {
+        nock('https://mockedanyway.com').get('/').reply(500);
+        nock('https://mockedanyway.com').get('/').reply(429);
+        nock('https://mockedanyway.com')
             .get('/')
             .reply(200, 'it works after all');
 
@@ -106,6 +104,22 @@ describe('fetchData', () => {
             { retry: true },
         );
         expect(response).toBe('it works after all');
-        scope.done();
+        nock.restore();
+    });
+
+    test('fetchData: failed request, retry=false', async () => {
+        nock('https://mockedanyway.com').get('/').reply(500);
+        nock('https://mockedanyway.com').get('/').reply(429);
+        nock('https://mockedanyway.com')
+            .get('/')
+            .reply(200, 'it works after all');
+
+        const response = await fetchData({
+            name: 'coinGecko',
+            source: 'https://mockedanyway.com',
+            path: '$.market_data.current_price.usd',
+        });
+        expect(response).toBe(null);
+        nock.restore();
     });
 });
