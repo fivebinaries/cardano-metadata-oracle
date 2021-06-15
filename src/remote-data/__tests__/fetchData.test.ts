@@ -4,9 +4,12 @@ import {
     fetchDataSources,
     fetchData,
 } from '../fetchData';
+import * as nock from 'nock';
 import * as fetchDataFunctions from '../fetchData';
 import * as fixtures from './__fixtures__/';
 import axios from 'axios';
+
+axios.defaults.adapter = require('axios/lib/adapters/http');
 
 describe('fetchData', () => {
     test('countBytesInString', () => {
@@ -83,5 +86,26 @@ describe('fetchData', () => {
             }
             spy.mockRestore();
         });
+    });
+
+    test('Should retry fetch after failed request', async () => {
+        const scope = nock('https://mockedanyway.com')
+            .get('/')
+            .reply(500)
+            .get('/')
+            .reply(429)
+            .get('/')
+            .reply(200, 'it works after all');
+
+        const response = await fetchData(
+            {
+                name: 'coinGecko',
+                source: 'https://mockedanyway.com',
+                path: '$.market_data.current_price.usd',
+            },
+            { retry: true },
+        );
+        expect(response).toBe('it works after all');
+        scope.done();
     });
 });
