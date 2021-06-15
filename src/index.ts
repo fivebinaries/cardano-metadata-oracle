@@ -62,41 +62,32 @@ class CardanoMetadataOracle extends Command {
             required: false,
             exclusive: ['address'],
         }),
-        blockfrost: flags.boolean({
+        backend: flags.string({
             description:
-                "Use Blockfrost.io for fetching UTXOs and pushing transaction to the blockchain. Reads project ID from env variable 'BLOCKFROST_PROJECT_ID'. (Required if not cardano-node-socket)",
+                'Backend to facilitate communication with the Cardano blockchain',
             required: false,
-            exclusive: ['cardano-node'],
-        }),
-        'cardano-node': flags.boolean({
-            description: 'Use cardano node via "cardano-cli"',
-            required: false,
-            exclusive: ['blockfrost'],
+            options: ['blockfrost', 'cardano-node'],
         }),
     };
 
     async run(): Promise<void> {
         const { flags } = this.parse(CardanoMetadataOracle);
-        const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'];
+        const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'] ?? '';
         const testnet = flags.network === 'testnet';
 
         if (!flags.address && !flags['seed-file']) {
             throw Error('Missing required flag: --address or --seed-file');
         }
 
-        if (!flags['cardano-node']) {
-            // if --cardano-node flag is not provided, use Blockfrost API
-            flags.blockfrost = true;
-        }
-
-        if (flags.blockfrost && !blockfrostApiKey) {
+        if (flags.backend === 'blockfrost' && !blockfrostApiKey) {
             // Make sure API key is set in order to use Blockfrost API
             throw Error('Environment variable BLOCKFROST_PROJECT_ID not set');
         }
 
-        const client = flags.blockfrost
-            ? new BlockfrostClient(testnet, blockfrostApiKey!)
-            : new CardanoNodeClient(testnet);
+        const client =
+            flags.backend === 'blockfrost'
+                ? new BlockfrostClient(testnet, blockfrostApiKey)
+                : new CardanoNodeClient(testnet);
 
         let address = '';
         let signKey;
@@ -189,24 +180,17 @@ class CardanoMetadataOracle extends Command {
             }
 
             // Push transaction to network
-            if (
-                (flags['blockfrost'] && blockfrostApiKey) ||
-                flags['cardano-node']
-            ) {
-                const res = await client.pushTransaction(
-                    transaction.to_bytes(),
+            const res = await client.pushTransaction(transaction.to_bytes());
+            if (res) {
+                console.log();
+                console.log(
+                    chalk.green(
+                        `Transaction successfully submitted: ${getExplorerLink(
+                            txId,
+                            testnet,
+                        )}`,
+                    ),
                 );
-                if (res) {
-                    console.log();
-                    console.log(
-                        chalk.green(
-                            `Transaction successfully submitted: ${getExplorerLink(
-                                txId,
-                                testnet,
-                            )}`,
-                        ),
-                    );
-                }
             }
         } else {
             console.log(
