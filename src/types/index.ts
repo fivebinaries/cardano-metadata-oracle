@@ -7,11 +7,11 @@ export interface DataSourceEndpoint {
 }
 
 export interface DataSources {
-    [sourceName: string]: DataSourceEndpoint[];
+    [ticker: string]: DataSourceEndpoint[];
 }
 
 export interface RemoteData {
-    [sourceName: string]: {
+    [ticker: string]: {
         source: DataSourceEndpoint['name'];
         value: string;
     }[];
