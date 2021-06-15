@@ -32,7 +32,7 @@ describe('fetchData', () => {
         expect(
             await fetchData({
                 name: 'coinGecko',
-                source: 'https://mockedanyway.com',
+                url: 'https://mockedanyway.com',
                 path: '$.market_data.current_price.usd',
             }),
         ).toBe('downloaded data');
@@ -55,7 +55,7 @@ describe('fetchData', () => {
         expect(
             await fetchData({
                 name: 'coinGecko',
-                source: 'https://mockedanyway.com',
+                url: 'https://mockedanyway.com',
                 path: '$.market_data.current_price.usd',
             }),
         ).toBeNull();
@@ -98,7 +98,7 @@ describe('fetchData', () => {
         const response = await fetchData(
             {
                 name: 'coinGecko',
-                source: 'https://mockedanyway.com',
+                url: 'https://mockedanyway.com',
                 path: '$.market_data.current_price.usd',
             },
             { retry: true },
@@ -116,7 +116,7 @@ describe('fetchData', () => {
 
         const response = await fetchData({
             name: 'coinGecko',
-            source: 'https://mockedanyway.com',
+            url: 'https://mockedanyway.com',
             path: '$.market_data.current_price.usd',
         });
         expect(response).toBe(null);

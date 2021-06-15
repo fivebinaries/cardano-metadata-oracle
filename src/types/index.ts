@@ -1,7 +1,7 @@
 import * as cbor from 'cbor';
 export interface DataSourceEndpoint {
     name: string;
-    source: string;
+    url: string;
     path?: string;
     abort_on_failure?: boolean;
 }

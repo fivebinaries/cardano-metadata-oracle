@@ -16,7 +16,7 @@ export const fetchData = async (
     }
 
     try {
-        const res = await axios.get(entry.source, {
+        const res = await axios.get(entry.url, {
             headers: { 'User-Agent': 'cardano-metadata-oracle' },
         });
         return res.data;
@@ -85,7 +85,7 @@ export const fetchDataSources = async (
     for (const ticker in dataSources) {
         const endpoints = dataSources[ticker];
         for (const endpoint of endpoints) {
-            // console.log(`Fetching ${endpoint.source}:${endpoint.name}`)
+            // console.log(`Fetching ${ticker}:${endpoint.name}`)
             promises.push({
                 ticker,
                 endpoint,
@@ -105,7 +105,7 @@ export const fetchDataSources = async (
         if (!data) {
             console.log(
                 chalk.red(
-                    `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
+                    `Failed to fetch ${endpoint.name} from ${endpoint.url}`,
                 ),
             );
             if (endpoint.abort_on_failure) {
@@ -118,7 +118,7 @@ export const fetchDataSources = async (
         if (!parsedData) {
             console.log(
                 chalk.red(
-                    `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
+                    `Failed to parse data ${endpoint.name} from ${endpoint.url}`,
                 ),
             );
             if (endpoint.abort_on_failure) {
