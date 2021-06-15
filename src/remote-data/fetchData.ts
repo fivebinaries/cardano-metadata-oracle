@@ -1,4 +1,5 @@
 import { DataSourceEndpoint, DataSources, RemoteData } from '../types';
+import * as rax from 'retry-axios';
 import axios from 'axios';
 import * as chalk from 'chalk';
 import * as jp from 'jsonpath';
@@ -8,8 +9,12 @@ export const countBytesInString = (input: string): number =>
 
 export const fetchData = async (
     entry: DataSourceEndpoint,
+    options?: { retry: boolean },
 ): Promise<unknown> => {
     try {
+        if (options?.retry) {
+            rax.attach();
+        }
         const res = await axios.get(entry.source, {
             headers: { 'User-Agent': 'cardano-metadata-oracle' },
         });
@@ -76,7 +81,10 @@ export const fetchDataSources = async (
         const endpoints = dataSource[source];
         for (const endpoint of endpoints) {
             // console.log(`Fetching ${endpoint.source}:${endpoint.name}`)
-            const data = await fetchData(endpoint);
+
+            const data = await fetchData(endpoint, {
+                retry: !endpoint.abort_on_failure,
+            });
             if (!data) {
                 console.log(
                     chalk.red(
