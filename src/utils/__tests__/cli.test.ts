@@ -5,9 +5,7 @@ describe('utils - cli', () => {
         console.log = jest.fn();
         utils.renderTransactionTable('txid', '0.1', [
             {
-                block: 'blockHash',
                 tx_hash: 'hash',
-                tx_index: 1,
                 output_index: 1,
                 amount: [
                     {

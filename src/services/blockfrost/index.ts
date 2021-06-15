@@ -1,37 +1,50 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Responses } from '@blockfrost/blockfrost-js';
-import { getClient } from '../../utils/blockfrostAPI';
+import { BlockFrostAPI, Responses } from '@blockfrost/blockfrost-js';
+import { BlockchainClient } from '../../types';
 
-export const pushTransaction = async (
-    transaction: Uint8Array,
-): Promise<string> => {
-    const client = getClient();
-    try {
-        const response = await client!.txSubmit(transaction);
-        return response;
-    } catch (err) {
-        if (err?.data) {
-            console.log(err?.data);
-        } else {
-            console.log(err);
-        }
-        throw Error('Failed to push a transaction a network.');
-    }
-};
+type PartialUTXO = Pick<
+    Responses['address_utxo_content'][number],
+    'tx_hash' | 'output_index' | 'amount'
+>;
+export class BlockfrostClient implements BlockchainClient {
+    testnet: boolean;
+    apiKey: string;
+    client: BlockFrostAPI;
 
-export const fetchUtxos = async (
-    address: string,
-): Promise<Responses['address_utxo_content']> => {
-    const client = getClient();
-    try {
-        const response = await client!.addressesUtxosAll(address);
-        return response;
-    } catch (err) {
-        if (err?.data) {
-            console.log(err?.data);
-        } else {
-            console.log(err);
-        }
-        throw Error('Fetching UTXOs failed.');
+    constructor(testnet: boolean, apiKey: string) {
+        this.testnet = !!testnet;
+        this.apiKey = apiKey;
+        this.client = new BlockFrostAPI({
+            projectId: this.apiKey,
+            isTestnet: this.testnet,
+        });
     }
-};
+
+    pushTransaction = async (transaction: Uint8Array): Promise<string> => {
+        try {
+            const response = await this.client.txSubmit(transaction);
+            return response;
+        } catch (err) {
+            if (err?.data) {
+                console.log(err?.data);
+            } else {
+                console.log(err);
+            }
+            throw Error('Failed to push a transaction a network.');
+        }
+    };
+
+    fetchUtxos = async (address: string): Promise<PartialUTXO[]> => {
+        try {
+            const response = await this.client.addressesUtxosAll(address);
+            return response;
+        } catch (err) {
+            if (err?.data) {
+                console.log(err?.data);
+            } else {
+                console.log(err);
+            }
+            throw Error('Fetching UTXOs failed.');
+        }
+    };
+}

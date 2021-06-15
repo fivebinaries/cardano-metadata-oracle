@@ -35,11 +35,8 @@ describe('utils - composeTransaction', () => {
                     {
                         tx_hash:
                             'c2d3af74aed2ff310890c2b54fce15ac42127959036ebc8261154fb4c0c9e0a2',
-                        tx_index: 0,
                         output_index: 0,
                         amount: [{ unit: 'token', quantity: '400000000' }],
-                        block:
-                            'd42e18d2980f62474379c2b40d00e78825a00e6a788978e20ab14170531f1703',
                     },
                 ],
             );

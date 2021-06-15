@@ -10,7 +10,7 @@ Cardano oracle node is a tool that retires various remote data, have ability for
 
 ### Remote data fetcher
 
-Remote data fetcher component is responsible for fetching the data from a remote web server. At the moment we're supporting just `http` and `https` protocols. This correspons to the `source:` YAML propriety in our source file that is set by the `--origin-file`  command line option.
+Remote data fetcher component is responsible for fetching the data from a remote web server. At the moment we're supporting just `http` and `https` protocols. This correspons to the `source:` YAML propriety in our source file that is set by the `--origin-file` command line option.
 
 ### Data parser
 
@@ -20,10 +20,9 @@ Data parser is responsibile for parsing the payload out of the fetched data in t
 
 After we have fetched the data from the origin and parsed the values out of it, the metadata composer is responsible for building the [resulting metadata payload](https://github.com/input-output-hk/cardano-node/blob/master/doc/reference/tx-metadata.md) that is accepted by the Cardano network.
 
-
 ### Transaction composer
 
-Transaction composer is responsibile for discovering the UTXO set using Blockfrost remote API or local Cardano node and [build the final transaction](https://docs.cardano.org/projects/cardano-serialization-lib/en/latest/getting-started/generating-transactions.html) with minimal necessary fees. 
+Transaction composer is responsibile for discovering the UTXO set using Blockfrost remote API or local Cardano node and [build the final transaction](https://docs.cardano.org/projects/cardano-serialization-lib/en/latest/getting-started/generating-transactions.html) with minimal necessary fees.
 
 ### Transaction signer
 
@@ -33,10 +32,9 @@ A final raw transaction might be signed, the transaction signer will derivate th
 
 The final stage is to submit the signed transaction to the Cardano network.
 
-
 ## Command line options
 
-```bash
+```
 $ npx cardano-metadata-oracle --help
 
 Usage: cardano-metadata-oracle [OPTIONS]
@@ -45,23 +43,24 @@ Available options:
 
   --origin-file [FILENAME]             Path to the origin file which contains the list of origins
   --metadata-label [ID]                Integer of the Cardano metadata label as per CIP10 (Optional, default 1968)
-  
+
   --address [ADDR]                     Address to build the transaction
-  --network [mainnet|network magic]    Specify the Cardano network (Optional, mainnet by default)
-  
+  --address-derivation-path [PATH]     Derivation path for the address in 'account/chain/address' format (Optional, default 0/0/0)
+  --network [mainnet|testnet]          Specify the Cardano network (Optional, mainnet by default)
+
   --seed-file [FILENAME]               File containing the ED25519-BIP32 seed phrase (Required if not skip-signing)
   --skip-signing                       Skip the signing process, just generate the raw transaction
-  
-  --cardano-node-socket [FILENAME]     Path to the cardano-node socket file (Required if not blockfrost-project-id nor skip-signing)
-  --blockfrost-project-id [PROJECT_ID] Blockfrost.io PROJECT_ID for selected network (Required if not cardano-node-socket nor skip-signing)
+  --out-file [FILENAME]                Output filepath of a composed transaction
+
+  --backend [cardano-node|blockfrost]  Backend to facilitate communication with the Cardano blockchain.
 
 More information at https://github.com/fivebinaries/cardano-metadata-oracle/.
 $
 ```
+
 ## Origin configuration file
 
 This file defines the origins and how to parse the data from them.
-
 
 ```
 ticker:

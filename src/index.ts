@@ -4,16 +4,20 @@ import { Command, flags } from '@oclif/command';
 import { composeMetadata } from './transaction/composeMetadata';
 import { fetchDataSources } from './remote-data/fetchData';
 import { parseFile } from './remote-data/parseOriginFile';
-import { fetchUtxos, pushTransaction } from './services/blockfrost';
+import { BlockfrostClient } from './services/blockfrost';
+import {
+    CardanoNodeClient,
+    convertToCliTx,
+    convertToCliTxDraft,
+} from './services/cardano-node';
 import { composeTransaction } from './transaction/composeTransaction';
 import { signTransaction } from './transaction/signTransaction';
 import { deriveAddressPrvKey, parseDerivationPath } from './utils/key';
 import { mnemonicFromFile, mnemonicToPrivateKey } from './utils/mnemonic';
 import { writeToFile } from './utils/file';
-import { Responses } from '@blockfrost/blockfrost-js';
 import { getExplorerLink } from './utils/explorer';
 import { renderMetadata, renderTransactionTable } from './utils/cli';
-import { setBlockfrostClient } from './utils/blockfrostAPI';
+import { UTXO } from './types';
 
 class CardanoMetadataOracle extends Command {
     static description = 'describe the command here';
@@ -44,7 +48,7 @@ class CardanoMetadataOracle extends Command {
             required: false,
             default: 1968,
         }),
-        'write-to-file': flags.string({
+        'out-file': flags.string({
             description: 'Writes transaction to a file',
         }),
         'address-derivation-path': flags.string({
@@ -58,44 +62,32 @@ class CardanoMetadataOracle extends Command {
             required: false,
             exclusive: ['address'],
         }),
-        blockfrost: flags.boolean({
+        backend: flags.string({
             description:
-                "Use Blockfrost.io for fetching UTXOs and pushing transaction to the blockchain. Reads project ID from env variable 'BLOCKFROST_PROJECT_ID'. (Required if not cardano-node-socket)",
+                'Backend to facilitate communication with the Cardano blockchain',
             required: false,
-            exclusive: ['cardano-node-socket'],
-        }),
-        'cardano-node-socket': flags.string({
-            description: 'Path to the cardano-node socket file',
-            required: false,
-            exclusive: ['blockfrost'],
+            options: ['blockfrost', 'cardano-node'],
         }),
     };
 
     async run(): Promise<void> {
         const { flags } = this.parse(CardanoMetadataOracle);
-        const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'];
+        const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'] ?? '';
         const testnet = flags.network === 'testnet';
 
-        // if (!flags.address && !flags['seed-file']) {
-        //     throw Error(
-        //         "Missing flag --address or --seed-file"
-        //     );
-        // }
-
-        if (!flags['cardano-node-socket']) {
-            // if --cardano-node-socket flag is not provided, use Blockfrost API
-            flags.blockfrost = true;
+        if (!flags.address && !flags['seed-file']) {
+            throw Error('Missing required flag: --address or --seed-file');
         }
 
-        if (flags.blockfrost) {
+        if (flags.backend === 'blockfrost' && !blockfrostApiKey) {
             // Make sure API key is set in order to use Blockfrost API
-            if (!blockfrostApiKey) {
-                throw Error(
-                    'Environment variable BLOCKFROST_PROJECT_ID not set',
-                );
-            }
-            setBlockfrostClient(blockfrostApiKey, testnet);
+            throw Error('Environment variable BLOCKFROST_PROJECT_ID not set');
         }
+
+        const client =
+            flags.backend === 'blockfrost'
+                ? new BlockfrostClient(testnet, blockfrostApiKey)
+                : new CardanoNodeClient(testnet);
 
         let address = '';
         let signKey;
@@ -146,17 +138,14 @@ class CardanoMetadataOracle extends Command {
         );
 
         // Fetch utxos
-        let utxos: Responses['address_utxo_content'] = [];
-        if (flags.blockfrost && blockfrostApiKey) {
-            cli.action.start('Fetching UTXOs');
-            // console.log("Fetching UTXOs");
-            const fetchedUtxos = await fetchUtxos(address);
-            if (fetchedUtxos.length > 0) {
-                utxos = fetchedUtxos;
-            } else {
-                throw Error('No UTXOs available for the address.');
-            }
-            cli.action.stop();
+        let utxos: UTXO[] = [];
+        cli.action.start('Fetching UTXOs');
+        const fetchedUtxos = await client.fetchUtxos(address);
+        cli.action.stop();
+        if (fetchedUtxos.length > 0) {
+            utxos = fetchedUtxos;
+        } else {
+            throw Error('No UTXOs available for the address.');
         }
 
         // cli.action.start("Building transaction");
@@ -179,29 +168,50 @@ class CardanoMetadataOracle extends Command {
             const transaction = signTransaction(txBody, txMetadata, signKey);
 
             // Write transaction to a file
-            if (flags['write-to-file']) {
-                writeToFile(flags['write-to-file'], transaction.to_bytes());
+            if (flags['out-file']) {
+                writeToFile(
+                    flags['out-file'],
+                    JSON.stringify(
+                        convertToCliTx(transaction.to_bytes()),
+                        null,
+                        4,
+                    ),
+                );
             }
 
             // Push transaction to network
-            if (flags['blockfrost'] && blockfrostApiKey) {
-                const txId = await pushTransaction(transaction.to_bytes());
-                if (txId) {
-                    console.log();
-                    console.log(
-                        chalk.green(
-                            `Transaction submitted successfully: ${getExplorerLink(
-                                txId,
-                                testnet,
-                            )}`,
-                        ),
-                    );
-                }
+            const res = await client.pushTransaction(transaction.to_bytes());
+            if (res) {
+                console.log();
+                console.log(
+                    chalk.green(
+                        `Transaction successfully submitted: ${getExplorerLink(
+                            txId,
+                            testnet,
+                        )}`,
+                    ),
+                );
             }
         } else {
-            // Write draft ttx to a file
-            if (flags['write-to-file']) {
-                writeToFile(flags['write-to-file'], txBody.to_bytes());
+            console.log(
+                chalk.blueBright(
+                    'Provide a signing key (--sign-key) to push the transaction to the network or --out-file to export it to a file',
+                ),
+            );
+            // no signing
+            // Write unsigned tx to a file
+            if (flags['out-file']) {
+                writeToFile(
+                    flags['out-file'],
+                    JSON.stringify(
+                        convertToCliTxDraft(txBody, txMetadata),
+                        null,
+                        4,
+                    ),
+                );
+                console.log(
+                    chalk.green(`Transaction exported to ${flags['out-file']}`),
+                );
             }
         }
     }

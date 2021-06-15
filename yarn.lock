@@ -547,6 +547,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cto.af/textdecoder@npm:^0.0.0":
+  version: 0.0.0
+  resolution: "@cto.af/textdecoder@npm:0.0.0"
+  checksum: 142ee0a5ecd41dba1405973bbdcb4e1e18cb21051364e7ac56d66b50597057b7bf00ec25d7da908ace73902b1d39cf3221f5f6b76d85b0aebbbb229f32af1f8b
+  languageName: node
+  linkType: hard
+
 "@dabh/diagnostics@npm:^2.0.2":
   version: 2.0.2
   resolution: "@dabh/diagnostics@npm:2.0.2"
@@ -558,10 +565,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emurgo/cardano-serialization-lib-nodejs@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:6.1.0"
-  checksum: e3348adf9355782195caea986c9f925e5c88ea42eac3b6f8759e50f2c745e8c5b9f04906114ef49bd21ecd1e28bdd6a9821432488e24eb11757d4857f1e7a71f
+"@emurgo/cardano-serialization-lib-nodejs@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:7.1.0"
+  checksum: 845f0c21182263ca7ae251517c19d754540516f97258e7c5e4225ad33c9fd46fb1f06a86291b60b0a737e1ee5448abed77c5f7c5b17da189cce35a5873346d47
   languageName: node
   linkType: hard
 
@@ -1224,6 +1231,13 @@ __metadata:
   version: 2.0.0
   resolution: "@types/stack-utils@npm:2.0.0"
   checksum: 662312302e07685c99a1c45c6753eb997b31d2af66e646c5937f62d593a63a111289503d0b06a8d1e6f3922b67fc2ed94889d84653a08861a7fee67b81ce5b92
+  languageName: node
+  linkType: hard
+
+"@types/tmp@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@types/tmp@npm:0.2.0"
+  checksum: 8b3d8ce993db6129112690d2fc4a8615c8073bd47a3dbcb3384563077f6081c560912aa6c53bb46ec4b45fca1e26c2f811273534acdafdcc224fc49a8bd85467
   languageName: node
   linkType: hard
 
@@ -2126,7 +2140,7 @@ __metadata:
   resolution: "cardano-metadata-oracle@workspace:."
   dependencies:
     "@blockfrost/blockfrost-js": ^0.3.0
-    "@emurgo/cardano-serialization-lib-nodejs": ^6.1.0
+    "@emurgo/cardano-serialization-lib-nodejs": ^7.1.0
     "@oclif/command": ^1
     "@oclif/config": ^1
     "@oclif/dev-cli": ^1.26.0
@@ -2135,11 +2149,13 @@ __metadata:
     "@types/js-yaml": ^4.0.0
     "@types/jsonpath": ^0.2.0
     "@types/node": ^14.14.37
+    "@types/tmp": ^0.2.0
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": ^4.22.0
     ajv: ^8.0.5
     axios: ^0.21.1
     bip39: ^3.0.3
+    cbor: ^7.0.5
     chalk: ^4.1.1
     cli-ux: ^5.5.1
     eslint: ^7.24.0
@@ -2151,6 +2167,7 @@ __metadata:
     js-yaml: ^4.0.0
     jsonpath: ^1.1.1
     prettier: ^2.2.1
+    tmp: ^0.2.1
     ts-jest: ^27.0.3
     ts-node: ^9.1.1
     tslib: ^1
@@ -2170,6 +2187,21 @@ __metadata:
   bin:
     cdl: ./bin/cdl.js
   checksum: 7dafc23b737921f8249c3060709413719729ec1fb4771ac805f59990314ef78993931d73a3cf3ef2edd6f1789b2b1630e20f24e9c76256d01796067ad244d263
+  languageName: node
+  linkType: hard
+
+"cbor@npm:^7.0.5":
+  version: 7.0.5
+  resolution: "cbor@npm:7.0.5"
+  dependencies:
+    "@cto.af/textdecoder": ^0.0.0
+    nofilter: ^2.0.3
+  peerDependencies:
+    bignumber.js: ^9.0.1
+  peerDependenciesMeta:
+    bignumber.js:
+      optional: true
+  checksum: e9c4f36ad912cbf2ad53db39058c7b7a6e34c340f98ef34f7ceea14ec01aacb3c633b1410e332cd4ec1d544f4460aed4c50165e04cddda1b23ccd29eea858e78
   languageName: node
   linkType: hard
 
@@ -5544,6 +5576,15 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
+"nofilter@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "nofilter@npm:2.0.3"
+  dependencies:
+    "@cto.af/textdecoder": ^0.0.0
+  checksum: a39b197bd827dff349f50ed51232bda4689abb4ea8321e9a7ff152a304b633ee70422d018aa65a53a95632176e5177cb2fa0b32b69a0910782699f7f0076bdb7
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^5.0.0":
   version: 5.0.0
   resolution: "nopt@npm:5.0.0"
@@ -7128,6 +7169,15 @@ resolve@^2.0.0-next.3:
   dependencies:
     rimraf: ^2.6.3
   checksum: b505e9f4f5e8076a1789fa1cec50b42220fdb90dec3e44ff0598d74701e340333ef7c28a55ed2d59b24112e2668e98e92852352ad4dc20352250a7be5cc1a973
+  languageName: node
+  linkType: hard
+
+"tmp@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "tmp@npm:0.2.1"
+  dependencies:
+    rimraf: ^3.0.0
+  checksum: 13973825ff1c7aed3359bba97c146c860ebb5b1cbdca88387a2ff8bae704d2478b701cc3adc29b1461be292fed1e4ae56b378b6a0386bbab471ef32860e0a711
   languageName: node
   linkType: hard
 
