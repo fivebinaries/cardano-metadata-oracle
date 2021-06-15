@@ -74,53 +74,69 @@ export const parseDataFromResponse = (
 };
 
 export const fetchDataSources = async (
-    dataSource: DataSources,
+    dataSources: DataSources,
 ): Promise<RemoteData | null> => {
     const enhancedDataSources: RemoteData = {};
-
-    for (const source in dataSource) {
-        const endpoints = dataSource[source];
+    const promises: {
+        ticker: string;
+        endpoint: DataSourceEndpoint;
+        promise: Promise<unknown>;
+    }[] = [];
+    for (const ticker in dataSources) {
+        const endpoints = dataSources[ticker];
         for (const endpoint of endpoints) {
             // console.log(`Fetching ${endpoint.source}:${endpoint.name}`)
-
-            const data = await fetchData(endpoint, {
-                retry: !endpoint.abort_on_failure,
-            });
-            if (!data) {
-                console.log(
-                    chalk.red(
-                        `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
-                    ),
-                );
-                if (endpoint.abort_on_failure) {
-                    return null;
-                }
-                continue;
-            }
-
-            const parsedData = parseDataFromResponse(data, endpoint.path);
-            if (!parsedData) {
-                console.log(
-                    chalk.red(
-                        `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
-                    ),
-                );
-                if (endpoint.abort_on_failure) {
-                    return null;
-                }
-                continue;
-            }
-            // Create an object where key is name for the data source, source field is name for given endpoint, value stores fetched and parsed data
-            if (!enhancedDataSources[source]) {
-                enhancedDataSources[source] = [];
-            }
-
-            enhancedDataSources[source].push({
-                source: endpoint.name,
-                value: parsedData,
+            promises.push({
+                ticker,
+                endpoint,
+                promise: fetchData(endpoint, {
+                    retry: !endpoint.abort_on_failure,
+                }).catch(() => {
+                    // catch error so Promise.all below won't reject after first failed request
+                }),
             });
         }
     }
+
+    const responses = await Promise.all(promises.map(p => p.promise));
+    for (const [i, data] of responses.entries()) {
+        const ticker = promises[i].ticker;
+        const endpoint = promises[i].endpoint;
+        if (!data) {
+            console.log(
+                chalk.red(
+                    `Failed to fetch ${endpoint.name} from ${endpoint.source}`,
+                ),
+            );
+            if (endpoint.abort_on_failure) {
+                return null;
+            }
+            continue;
+        }
+
+        const parsedData = parseDataFromResponse(data, endpoint.path);
+        if (!parsedData) {
+            console.log(
+                chalk.red(
+                    `Failed to parse data ${endpoint.name} from ${endpoint.source}`,
+                ),
+            );
+            if (endpoint.abort_on_failure) {
+                return null;
+            }
+            continue;
+        }
+        // Create an object where key is name for the data source, source field is name for given endpoint, value stores fetched and parsed data
+        if (!enhancedDataSources[ticker]) {
+            enhancedDataSources[ticker] = [];
+        }
+
+        enhancedDataSources[ticker].push({
+            source: endpoint.name,
+            value: parsedData,
+        });
+    }
+
     // If no data were added to the object return null
     return Object.keys(enhancedDataSources).length === 0
         ? null
