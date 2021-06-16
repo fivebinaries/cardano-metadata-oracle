@@ -1,6 +1,6 @@
 {
     "name": "cardano-metadata-oracle",
-    "version": "0.0.1",
+    "version": "0.0.1-alpha",
     "author": "Five Binaries",
     "bin": "./bin/run",
     "bugs": "https://github.com/fivebinaries/cardano-metadata-oracle/issues",
@@ -44,7 +44,6 @@
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-prettier": "3.4.0",
-        "eslint-plugin-react": "^7.24.0",
         "jest": "^27.0.4",
         "nock": "^13.1.0",
         "prettier": "^2.2.1",
@@ -52,7 +51,7 @@
         "typescript": "~4.3.2"
     },
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=14.0.0"
     },
     "files": [
         "/bin",
