@@ -65,7 +65,7 @@ export const fetchDataSources = [
             ada: [
                 {
                     name: 'coinGecko',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.usd',
                 },
             ],
@@ -90,12 +90,12 @@ export const fetchDataSources = [
             ada: [
                 {
                     name: 'endpoint1',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.usd',
                 },
                 {
                     name: 'endpoint2',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.eur',
                 },
             ],
@@ -121,12 +121,12 @@ export const fetchDataSources = [
             ada: [
                 {
                     name: 'coinGecko',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.usd',
                 },
                 {
                     name: 'coinGecko',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.czk',
                 },
             ],
@@ -152,7 +152,7 @@ export const fetchDataSources = [
             ada: [
                 {
                     name: 'coinGecko',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.usd',
                     abort_on_failure: true,
                 },
@@ -167,7 +167,7 @@ export const fetchDataSources = [
             ada: [
                 {
                     name: 'coinGecko',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.usd',
                     abort_on_failure: false,
                 },
@@ -182,7 +182,7 @@ export const fetchDataSources = [
             ada: [
                 {
                     name: 'coinGecko',
-                    source: 'https://mockedanyway.com',
+                    url: 'https://mockedanyway.com',
                     path: '$.market_data.current_price.eur',
                     abort_on_failure: true,
                 },

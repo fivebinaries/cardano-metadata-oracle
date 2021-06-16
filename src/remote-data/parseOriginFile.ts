@@ -15,7 +15,7 @@ const schema = {
                     name: {
                         type: 'string',
                     },
-                    source: {
+                    url: {
                         type: 'string',
                     },
                     path: {
@@ -25,7 +25,7 @@ const schema = {
                         type: 'boolean',
                     },
                 },
-                required: ['name', 'source', 'path'],
+                required: ['name', 'url', 'path'],
             },
         },
     },

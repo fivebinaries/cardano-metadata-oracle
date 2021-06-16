@@ -1,8 +1,6 @@
-
 <img src=".github/cardano_metadata_oracle_logo.png" align="right" height="200" />
 
 ![master build ci](https://github.com/fivebinaries/cardano-metadata-oracle/actions/workflows/build.yml/badge.svg?branch=master) <a href="https://fivebinaries.com/"><img src="https://img.shields.io/badge/made%20by-Five%20Binaries-darkviolet.svg?style=flat-square" /></a>
-
 
 # Cardano Metadata Oracle
 
@@ -18,15 +16,15 @@ This repository contains the code and configuration files of the metadata oracle
 
 ## Key Features
 
-* Data source definition templates that are easy to share within the community
-* Fetching and scraping data with error handling and retries
-* Transaction construction, including dynamic fee estimation
-* Support for remote API [Blockfrost.io](https://blockfrost.io)
+-   Data source definition templates that are easy to share within the community
+-   Fetching and scraping data with error handling and retries
+-   Transaction construction, including dynamic fee estimation
+-   Support for remote API [Blockfrost.io](https://blockfrost.io)
 
 ### Planning
 
-* Support for full local Cardano node (using `cardano-cli`) ([#6](https://github.com/fivebinaries/cardano-metadata-oracle/issues/6))
-* Prometheus style endpoint for monitoring and Grafana integration ([#7](https://github.com/fivebinaries/cardano-metadata-oracle/issues/7))
+-   Support for full local Cardano node (using `cardano-cli`) ([#6](https://github.com/fivebinaries/cardano-metadata-oracle/issues/6))
+-   Prometheus style endpoint for monitoring and Grafana integration ([#7](https://github.com/fivebinaries/cardano-metadata-oracle/issues/7))
 
 ## Installation
 
@@ -68,10 +66,10 @@ For lightweight Cardano metadata node, you need to use a remote API such as [Blo
 ```bash
 export BLOCKFROST_PROJECT_ID=your_blockfrost_project_id
 ```
+
 <img src=".github/cardano_metadata_oracle.svg" align="center" />
 
-
-To post your datapoint to the Cardano network, you need to provide at least `origin-file` and `seed-file` of the wallet containing the funds to do posting. You can use files in the `test` folder. 
+To post your datapoint to the Cardano network, you need to provide at least `origin-file` and `seed-file` of the wallet containing the funds to do posting. You can use files in the `test` folder.
 
 ## Configuration
 
@@ -82,11 +80,11 @@ The metadata oracle node needs a list of origins from where to fetch the data. T
 ```yarm
 ADAUSD:
   - name: coinGecko
-    source: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true
+    url: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true
     path: '$.market_data.current_price.usd'
     abort_on_failure: true
   - name: cryptoCompare
-    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=USDD&api_key=6e49d40fcabeb5e
+    url: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=USDD&api_key=6e49d40fcabeb5e
     path: '$.ADA.USD'
 ```
 
@@ -94,7 +92,7 @@ Have a look in the [`examples/`](./examples/) directory for inspiration.
 
 ### Wallet
 
-The Cardano metadata node by default tries to sign and post the transaction to the blockchain. In order to do this, we need a wallet with funds. This is being defined by the `--seed-file` switch pointing to the _ED25519-BIP32_ seed word phrase. 
+The Cardano metadata node by default tries to sign and post the transaction to the blockchain. In order to do this, we need a wallet with funds. This is being defined by the `--seed-file` switch pointing to the _ED25519-BIP32_ seed word phrase.
 
 Keep sane permissions on this file as it contains sensitive information. Also, it is best practice to keep only a small amount of funds on this wallet and top it up from time to time.
 

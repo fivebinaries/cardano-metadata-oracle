@@ -65,14 +65,14 @@ This file defines the origins and how to parse the data from them.
 ```
 ticker:
   - name: source_name
-    source: https://example.com/api/v0/my.json
+    url: https://example.com/api/v0/my.json
     path: '.[0]'
 ADAUSD:
   - name: coinGecko
-    source: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    url: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
     path: '.market_data.current_price.usd'
     abort_on_failure: true
   - name: cryptoCompare
-    source: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA,BTC,AGI&tsyms=BTC,USD,EUR,JPY,CAD&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
+    url: https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA,BTC,AGI&tsyms=BTC,USD,EUR,JPY,CAD&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e
     path: '.ADA.USD'
 ```
