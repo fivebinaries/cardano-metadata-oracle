@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import { cli } from 'cli-ux';
 import { Command, flags } from '@oclif/command';
+import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import { composeMetadata } from './transaction/composeMetadata';
 import { fetchDataSources } from './remote-data/fetchData';
 import { parseFile } from './remote-data/parseOriginFile';
@@ -18,10 +19,10 @@ import { writeToFile } from './utils/file';
 import { getExplorerLink } from './utils/explorer';
 import { renderMetadata, renderTransactionTable } from './utils/cli';
 import { UTXO } from './types';
+import { Metrics } from './utils/metrics';
+import { getRemainingBalance } from './utils/transaction';
 
 class CardanoMetadataOracle extends Command {
-    static description = 'describe the command here';
-
     static flags = {
         version: flags.version({ char: 'v' }),
         help: flags.help({ char: 'h' }),
@@ -66,11 +67,17 @@ class CardanoMetadataOracle extends Command {
             description:
                 'Backend to facilitate communication with the Cardano blockchain',
             required: false,
+            default: 'blockfrost',
             options: ['blockfrost', 'cardano-node'],
+        }),
+        'prometheus-exporter-file': flags.string({
+            description: 'File to export prometheus metrics',
+            required: false,
         }),
     };
 
     async run(): Promise<void> {
+        const metrics = new Metrics();
         const { flags } = this.parse(CardanoMetadataOracle);
         const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'] ?? '';
         const testnet = flags.network === 'testnet';
@@ -213,6 +220,21 @@ class CardanoMetadataOracle extends Command {
                     chalk.green(`Transaction exported to ${flags['out-file']}`),
                 );
             }
+        }
+
+        if (flags['prometheus-exporter-file']) {
+            const remainingBalance = CardanoWasm.BigNum.from_str(
+                getRemainingBalance(utxos),
+            ).clamped_sub(info.totalFeesAmount);
+            writeToFile(
+                flags['prometheus-exporter-file'],
+                metrics.toPrometheus(remainingBalance.to_str()),
+            );
+            console.log(
+                chalk.green(
+                    `Prometheus metrics exported to ${flags['prometheus-exporter-file']}`,
+                ),
+            );
         }
     }
 

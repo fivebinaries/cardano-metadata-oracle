@@ -64,4 +64,8 @@ describe('utils - transaction', () => {
     test('sortUtxos', () => {
         expect(utils.sortUtxos(UTOXS)).toEqual(sorted);
     });
+
+    test('sortUtxos', () => {
+        expect(utils.getRemainingBalance(UTOXS)).toBe('24');
+    });
 });

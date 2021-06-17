@@ -12,3 +12,15 @@ export const sortUtxos = (utxos: UTXO[]): UTXO[] => {
         return amountA.compare(amountB);
     });
 };
+
+export const getRemainingBalance = (utxos: UTXO[]): string => {
+    let balance = CardanoWasm.BigNum.from_str('0');
+    utxos.forEach(u => {
+        balance = balance.checked_add(
+            CardanoWasm.BigNum.from_str(
+                u.amount.find(a => a.unit === 'lovelace')?.quantity ?? '0',
+            ),
+        );
+    });
+    return balance.to_str();
+};
