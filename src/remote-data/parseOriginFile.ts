@@ -2,6 +2,7 @@ import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import Ajv from 'ajv';
 import { DataSources } from '../types';
+import { ERROR } from '../constants/messages';
 
 const schema = {
     type: 'object',
@@ -48,7 +49,7 @@ const validateOriginFile = (data: unknown) => {
 
 export const parseFile = (filePath: string): DataSources | null => {
     if (!fs.existsSync(filePath)) {
-        throw Error('Origin file does not exists.');
+        throw Error(ERROR.ORIGIN_FILE_DOES_NOT_EXIST);
     }
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const data = yaml.load(fileContent);
@@ -56,7 +57,7 @@ export const parseFile = (filePath: string): DataSources | null => {
     const result = validateOriginFile(data);
     if (!result.success) {
         console.log(result.errors);
-        throw Error('Invalid data in origin file.');
+        throw Error(ERROR.ORIGIN_FILE_NOT_VALID);
     }
     return data as DataSources;
 };

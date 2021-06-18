@@ -1,11 +1,12 @@
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
+import { ERROR } from '../constants/messages';
 
 const splitDerivationPath = (path: string) => {
     try {
         const tokens = path.split('/').map(t => parseInt(t));
         tokens.forEach(t => {
             if (Number.isNaN(t)) {
-                throw Error('Invalid path');
+                throw Error(ERROR.FLAG_INVALID_DERIVATION_PATH);
             }
         });
         return tokens;
@@ -16,12 +17,8 @@ const splitDerivationPath = (path: string) => {
 
 export const parseDerivationPath = (path: string): number[] => {
     const tokens = splitDerivationPath(path);
-    if (!tokens) {
-        throw Error('Invalid derivation path.');
-    }
-
-    if (tokens.length !== 3) {
-        throw Error('Invalid number of tokens.');
+    if (!tokens || tokens.length !== 3) {
+        throw Error(ERROR.FLAG_INVALID_DERIVATION_PATH);
     }
     return tokens;
 };

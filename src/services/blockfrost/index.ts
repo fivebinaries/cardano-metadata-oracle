@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { BlockFrostAPI, Responses } from '@blockfrost/blockfrost-js';
+import { ERROR } from '../../constants/messages';
 import { BlockchainClient } from '../../types';
 
 type PartialUTXO = Pick<
@@ -30,7 +31,7 @@ export class BlockfrostClient implements BlockchainClient {
             } else {
                 console.log(err);
             }
-            throw Error('Failed to push a transaction a network.');
+            throw Error(ERROR.TRANSACTION_SUBMIT_FAIL);
         }
     };
 
@@ -44,7 +45,7 @@ export class BlockfrostClient implements BlockchainClient {
             } else {
                 console.log(err);
             }
-            throw Error('Fetching UTXOs failed.');
+            throw Error(ERROR.UTXOS_FETCH_FAIL);
         }
     };
 }
