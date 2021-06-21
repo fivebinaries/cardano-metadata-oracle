@@ -2014,6 +2014,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bignumber.js@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "bignumber.js@npm:9.0.1"
+  checksum: 605e9639c413f344c37b23e919254f60a5017cc5ccd925e2f8fb79b36aa3d54f356df9c726f38465263236455f685d60dcf38dbe32cb0b7e4d2a32c94b035476
+  languageName: node
+  linkType: hard
+
 "binjumper@npm:^0.1.4":
   version: 0.1.4
   resolution: "binjumper@npm:0.1.4"
@@ -2225,6 +2232,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.27.0
     ajv: ^8.6.0
     axios: ^0.21.1
+    bignumber.js: ^9.0.1
     bip39: ^3.0.4
     cbor: ^7.0.5
     chalk: ^4.1.1
