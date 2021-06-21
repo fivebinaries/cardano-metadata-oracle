@@ -21,6 +21,7 @@ import { renderMetadata, renderTransactionTable } from './utils/cli';
 import { UTXO } from './types';
 import { Metrics } from './utils/metrics';
 import { getRemainingBalance } from './utils/transaction';
+import { ERROR } from './constants/messages';
 
 class CardanoMetadataOracle extends Command {
     static flags = {
@@ -78,26 +79,20 @@ class CardanoMetadataOracle extends Command {
 
     async run(): Promise<void> {
         const metrics = new Metrics();
+        let address = '';
+        let signKey: CardanoWasm.PrivateKey | undefined;
         const { flags } = this.parse(CardanoMetadataOracle);
         const blockfrostApiKey = process.env['BLOCKFROST_PROJECT_ID'] ?? '';
         const testnet = flags.network === 'testnet';
 
         if (!flags.address && !flags['seed-file']) {
-            throw Error('Missing required flag: --address or --seed-file');
+            throw Error(ERROR.FLAG_MISSING_SEED_OR_ADDR);
         }
 
         if (flags.backend === 'blockfrost' && !blockfrostApiKey) {
             // Make sure API key is set in order to use Blockfrost API
-            throw Error('Environment variable BLOCKFROST_PROJECT_ID not set');
+            throw Error(ERROR.ENV_BLOCKFROST_PROJECT_ID_NOT_SET);
         }
-
-        const client =
-            flags.backend === 'blockfrost'
-                ? new BlockfrostClient(testnet, blockfrostApiKey)
-                : new CardanoNodeClient(testnet);
-
-        let address = '';
-        let signKey;
 
         if (flags['seed-file']) {
             // console.log("Generating address, signing key from seed file");
@@ -122,7 +117,7 @@ class CardanoMetadataOracle extends Command {
         const dataSources = parseFile(flags['origin-file']);
 
         if (!dataSources) {
-            throw Error('No data sources specified in origin file.');
+            throw Error(ERROR.ORIGIN_FILE_NO_DATA);
         }
 
         // Fetch metadata from remote endpoints
@@ -130,9 +125,7 @@ class CardanoMetadataOracle extends Command {
         // console.log("Fetching data from sources in origin file");
         const fetchedData = await fetchDataSources(dataSources);
         if (!fetchedData) {
-            throw Error(
-                'No data downloaded from sources defined in origin file',
-            );
+            throw Error(ERROR.REMOTE_DATA_NO_DATA);
         }
         cli.action.stop();
 
@@ -145,6 +138,10 @@ class CardanoMetadataOracle extends Command {
         );
 
         // Fetch utxos
+        const client =
+            flags.backend === 'blockfrost'
+                ? new BlockfrostClient(testnet, blockfrostApiKey)
+                : new CardanoNodeClient(testnet);
         let utxos: UTXO[] = [];
         cli.action.start('Fetching UTXOs');
         const fetchedUtxos = await client.fetchUtxos(address);
@@ -152,7 +149,7 @@ class CardanoMetadataOracle extends Command {
         if (fetchedUtxos.length > 0) {
             utxos = fetchedUtxos;
         } else {
-            throw Error('No UTXOs available for the address.');
+            throw Error(ERROR.UTXOS_EMPTY);
         }
 
         // cli.action.start("Building transaction");

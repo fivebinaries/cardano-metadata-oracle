@@ -4,6 +4,7 @@ import * as tmp from 'tmp';
 import * as cbor from 'cbor';
 import { BlockchainClient, IndefiniteArray, TxFile, UTXO } from '../../types';
 import { writeToFile } from '../../utils/file';
+import { ERROR } from '../../constants/messages';
 
 const buildNetworkParam = (testnet: boolean): string =>
     testnet
@@ -117,7 +118,7 @@ export class CardanoNodeClient implements BlockchainClient {
             return p;
         } catch (err) {
             // this doesn't catch rejected promise
-            throw Error('Failed to push a transaction a network.');
+            throw Error(ERROR.TRANSACTION_SUBMIT_FAIL);
         }
     };
 
@@ -141,7 +142,7 @@ export class CardanoNodeClient implements BlockchainClient {
             return p;
         } catch (err) {
             // this doesn't catch rejected promise
-            throw Error('Failed to fetch utxos transactions');
+            throw Error(ERROR.UTXOS_FETCH_FAIL);
         }
     };
 }

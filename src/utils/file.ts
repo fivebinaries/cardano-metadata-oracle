@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 import { PathLike, writeFileSync } from 'fs';
+import { ERROR } from '../constants/messages';
 
 export const writeToFile = (
     filePath: PathLike | number,
@@ -8,6 +9,6 @@ export const writeToFile = (
     try {
         writeFileSync(filePath, data);
     } catch (err) {
-        throw Error(`Failed to write to a file ${filePath}`);
+        throw Error(`${ERROR.FILE_WRITE_FAIL}: ${filePath}`);
     }
 };

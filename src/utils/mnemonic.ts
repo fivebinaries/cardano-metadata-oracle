@@ -1,16 +1,17 @@
 import { readFileSync } from 'fs';
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import { mnemonicToEntropy, validateMnemonic } from 'bip39';
+import { ERROR } from '../constants/messages';
 
 export const mnemonicFromFile = (filepath: string): string => {
     const data = readFileSync(filepath, 'utf-8');
     if (!data) {
-        throw Error(`Can't parse mnemonic from '${filepath}.`);
+        throw Error(ERROR.MNEMONIC_PARSING_FAIL);
     }
     const mnemonic = data.trim();
     const isValid = validateMnemonic(mnemonic);
     if (!isValid) {
-        throw Error(`Mnemonic is not valid.`);
+        throw Error(ERROR.MNEMONIC_INVALID);
     }
     return mnemonic;
 };

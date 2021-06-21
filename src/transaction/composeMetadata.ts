@@ -1,5 +1,6 @@
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import * as chalk from 'chalk';
+import { ERROR } from '../constants/messages';
 import { RemoteData } from '../types';
 
 export const composeMetadata = (
@@ -18,6 +19,6 @@ export const composeMetadata = (
         return metadata;
     } catch (err) {
         console.error(chalk.red(err));
-        throw Error('Failed to encode fetched data as metadata.');
+        throw Error(ERROR.METADATA_ENCODE_FAIL);
     }
 };
