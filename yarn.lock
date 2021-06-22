@@ -525,25 +525,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blockfrost/blockfrost-js@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@blockfrost/blockfrost-js@npm:0.4.1"
+"@blockfrost/blockfrost-js@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@blockfrost/blockfrost-js@npm:0.5.3"
   dependencies:
-    "@blockfrost/openapi": ^0.1.18
+    "@blockfrost/openapi": ^0.1.19
     "@yarnpkg/pnpify": ^2.4.0
     axios: ^0.21.1
     axios-retry: ^3.1.9
     dotenv: ^8.2.0
     rimraf: ^3.0.2
     url-join: ^4.0.1
-  checksum: a30a82bd3f7c492742ef44dce69787cb7c7eab5d7a7c4f20568c90f13cacba4326c5959083f013f6fbbb284e0da504248f54dc08ad36a3814a4fcdef76d73838
+  checksum: 91610c3403c68005f46235ae6068626e36fcd03ad187515c9e4badc1adff6d0052058cf5dd3fa0f5a040334ed7e0f6c32253df9da00301ce56b8b79fe17c65f7
   languageName: node
   linkType: hard
 
-"@blockfrost/openapi@npm:^0.1.18":
-  version: 0.1.19
-  resolution: "@blockfrost/openapi@npm:0.1.19"
-  checksum: a5e69346f131e3dcf5f7ee28c262243e7f47f655ca15a2adc086caf709673bbf66b3cd3886a283bd8b9dfa94539029cea978fdd334d1803a3cb91ef7ac8956d8
+"@blockfrost/openapi@npm:^0.1.19":
+  version: 0.1.21
+  resolution: "@blockfrost/openapi@npm:0.1.21"
+  checksum: 5957b98bedb6e4f40f31a2f5600e87a40e4504273618c618e57e50ab7083aa6db543ec32c52c7656fb889959972d5538345ceb61755e674c8a0817a4ad373485
   languageName: node
   linkType: hard
 
@@ -2216,7 +2216,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cardano-metadata-oracle@workspace:."
   dependencies:
-    "@blockfrost/blockfrost-js": ^0.4.1
+    "@blockfrost/blockfrost-js": ^0.5.3
     "@emurgo/cardano-serialization-lib-nodejs": ^7.1.0
     "@oclif/command": ^1
     "@oclif/config": ^1
