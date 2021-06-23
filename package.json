@@ -11,7 +11,7 @@
         "version": "oclif-dev readme && git add README.md"
     },
     "dependencies": {
-        "@blockfrost/blockfrost-js": "^0.4.1",
+        "@blockfrost/blockfrost-js": "^0.5.3",
         "@emurgo/cardano-serialization-lib-nodejs": "^7.1.0",
         "@oclif/command": "^1",
         "@oclif/config": "^1",
@@ -40,6 +40,7 @@
         "@types/tmp": "^0.2.0",
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "^4.27.0",
+        "bignumber.js": "^9.0.1",
         "eslint": "^7.28.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-import": "^2.23.4",
