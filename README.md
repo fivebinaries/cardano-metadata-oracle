@@ -20,11 +20,8 @@ This repository contains the code and configuration files of the metadata oracle
 -   Fetching and scraping data with error handling and retries
 -   Transaction construction, including dynamic fee estimation
 -   Support for remote API [Blockfrost.io](https://blockfrost.io)
-
-### Planning
-
--   Support for full local Cardano node (using `cardano-cli`) ([#6](https://github.com/fivebinaries/cardano-metadata-oracle/issues/6))
--   Prometheus style endpoint for monitoring and Grafana integration ([#7](https://github.com/fivebinaries/cardano-metadata-oracle/issues/7))
+-   Support for full local Cardano node (using `cardano-cli`)
+-   Prometheus style endpoint for monitoring and Grafana integration
 
 ## Installation
 
@@ -71,6 +68,8 @@ export BLOCKFROST_PROJECT_ID=your_blockfrost_project_id
 
 To post your datapoint to the Cardano network, you need to provide at least `origin-file` and `seed-file` of the wallet containing the funds to do posting. You can use files in the `test` folder.
 
+When using the Cardano full node, make sure you set the environmental variable `CARDANO_NODE_SOCKET_PATH` to the socket file of the node.
+
 ## Configuration
 
 ### Origins
@@ -88,7 +87,7 @@ ADAUSD:
     path: '$.ADA.USD'
 ```
 
-Have a look in the [`examples/`](./examples/) directory for inspiration.
+Have a look in the [`test/data/`](test/data/) directory for inspiration.
 
 ### Wallet
 
@@ -105,3 +104,7 @@ By default, the node uses Cardano mainnet network. To post to testnet network, u
 ### Metadata label (optional)
 
 By default, we're using matadata label `1968` as per [nut.link](https://nut.link) specification. If you have a specific use case, it might be a good idea to use a different label.
+
+### Prometheus endpoint (optional)
+
+You have the possibility to export prometheus-style file with the current address balance, the time of last run and the execution time. This will help you a lot with monitoring of your oracle.
