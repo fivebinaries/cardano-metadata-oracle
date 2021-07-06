@@ -12,14 +12,12 @@ describe('parseOriginFile', () => {
                     abort_on_failure: true,
                     name: 'coinGecko',
                     path: '$.market_data.current_price.usd',
-                    url:
-                        'https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false',
+                    url: 'https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false',
                 },
                 {
                     name: 'cryptoCompare',
                     path: '$.ADA.USD',
-                    url:
-                        'https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=USD&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e',
+                    url: 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=ADA&tsyms=USD&api_key=6e49ae35d5ce92b382c90aca9eaf58fed9156099191f23bcd4b65b90fcabeb5e',
                 },
             ],
             ticker: [

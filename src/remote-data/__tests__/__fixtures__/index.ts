@@ -42,8 +42,7 @@ export const parseDataFromResponse = [
     {
         description: 'Parse string that is longer than 64B',
         data: {
-            id:
-                'cardano string that will certainly exceed the limit of 64B, for sure',
+            id: 'cardano string that will certainly exceed the limit of 64B, for sure',
             market_data: {
                 current_price: {
                     btc: 4.511e-5,
