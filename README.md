@@ -56,6 +56,18 @@ After building your container, just run it:
 $ docker run cardano-metadata-oracle --help
 ```
 
+### Docker Hub
+
+We're also hosting the image directly on Docker Hub. Run it direclty by using:
+
+```console
+$ docker run fivebinaries/cardano-metadata-oracle --help
+Unable to find image 'fivebinaries/cardano-metadata-oracle:latest' locally
+latest: Pulling from fivebinaries/cardano-metadata-oracle
+USAGE
+  $ cardano-metadata-oracle
+```
+
 ## Usage
 
 For lightweight Cardano metadata node, you need to use a remote API such as [Blockfrost.io](https://blockfrost.io). Go to [their website](https://blockfrost.io/dashboard) and retrieve a `project_id` for the specific network you want to use (Mainnet or Testnet).
