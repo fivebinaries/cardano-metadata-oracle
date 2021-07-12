@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
-import { cli } from 'cli-ux';
 import { Command, flags } from '@oclif/command';
+import { cli } from 'cli-ux';
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import { composeMetadata } from './transaction/composeMetadata';
 import { fetchDataSources } from './remote-data/fetchData';
