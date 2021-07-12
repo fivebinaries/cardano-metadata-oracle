@@ -1206,15 +1206,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nock@npm:^11.1.0":
-  version: 11.1.0
-  resolution: "@types/nock@npm:11.1.0"
-  dependencies:
-    nock: "*"
-  checksum: 7da1724ea2cbcd00730cc41e4880d987b0450823d5246cb1b0665be8db43ea9517bdff2161a1ecba8f23382c1e410b9b46da621614a9ae286568e6a8fd8a0a74
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:*":
   version: 14.14.41
   resolution: "@types/node@npm:14.14.41"
@@ -1998,7 +1989,6 @@ __metadata:
     "@types/jest": ^27.0.1
     "@types/js-yaml": ^4.0.3
     "@types/jsonpath": ^0.2.0
-    "@types/nock": ^11.1.0
     "@types/node": ^16.0.0
     "@types/tmp": ^0.2.1
     "@typescript-eslint/eslint-plugin": ^4.30.0
@@ -5274,18 +5264,6 @@ fsevents@^2.3.2:
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
   checksum: 0b4af3b5bb5d86c289f7a026303d192a7eb4417231fe47245c460baeabae7277bcd8fd9c728fb6bd62c30b3e15cd6620373e2cf33353b095d8b403d3e8a15aff
-  languageName: node
-  linkType: hard
-
-"nock@npm:*":
-  version: 13.1.0
-  resolution: "nock@npm:13.1.0"
-  dependencies:
-    debug: ^4.1.0
-    json-stringify-safe: ^5.0.1
-    lodash.set: ^4.3.2
-    propagate: ^2.0.0
-  checksum: 7176c55c5445d0f5642d1cc94f0dc5b205e495d49acfcc3e671ab892b79525055b042838aaa61e9b8469f3309fdb4f38aa9f16b0c50f66b1eee629a286b8ec08
   languageName: node
   linkType: hard
 
