@@ -15,7 +15,6 @@
         "@emurgo/cardano-serialization-lib-nodejs": "^7.1.0",
         "@oclif/command": "^1.8.0",
         "@oclif/config": "^1.17.0",
-        "@oclif/dev-cli": "^1.26.0",
         "@oclif/plugin-help": "^3.2.2",
         "ajv": "^8.6.1",
         "axios": "^0.21.1",
@@ -32,6 +31,7 @@
         "winston": "^3.3.3"
     },
     "devDependencies": {
+        "@oclif/dev-cli": "^1.26.0",
         "@types/jest": "^26.0.23",
         "@types/js-yaml": "^4.0.1",
         "@types/jsonpath": "^0.2.0",
