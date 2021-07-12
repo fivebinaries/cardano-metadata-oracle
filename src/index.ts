@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import { Command, flags } from '@oclif/command';
 import { cli } from 'cli-ux';
+import { CLIError } from '@oclif/errors';
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import { composeMetadata } from './transaction/composeMetadata';
 import { fetchDataSources } from './remote-data/fetchData';
@@ -235,8 +236,11 @@ class CardanoMetadataOracle extends Command {
         }
     }
 
-    async catch(error: unknown): Promise<void> {
-        console.log(chalk.red(error));
+    async catch(error: CLIError): Promise<void> {
+        const shouldPrint = !(error?.code === 'EEXIT');
+        if (shouldPrint) {
+            console.log(chalk.red(error));
+        }
         process.exit(1);
     }
 }
