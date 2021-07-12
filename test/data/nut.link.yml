@@ -1,0 +1,20 @@
+ADAUSD:
+  - name: coinGecko
+    url: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: "$.market_data.current_price.usd"
+ADAETUR:
+  - name: coinGecko
+    url: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: "$.market_data.current_price.eur"
+ADAJPY:
+  - name: coinGecko
+    url: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: "$.market_data.current_price.jpy"
+ADABTC:
+  - name: coinGecko
+    url: https://api.coingecko.com/api/v3/coins/cardano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false
+    path: "$.market_data.current_price.btc"
+BTCDIFF:
+  - name: trezor
+    url: https://btc1.trezor.io/api/v2
+    path: "$..backend.difficulty"
