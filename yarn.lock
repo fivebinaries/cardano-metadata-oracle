@@ -565,10 +565,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emurgo/cardano-serialization-lib-nodejs@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:7.1.0"
-  checksum: 845f0c21182263ca7ae251517c19d754540516f97258e7c5e4225ad33c9fd46fb1f06a86291b60b0a737e1ee5448abed77c5f7c5b17da189cce35a5873346d47
+"@emurgo/cardano-serialization-lib-nodejs@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:8.0.0"
+  checksum: 1eae2aa3e9b721352e779a9bd4cf442c21b74a7723c36f421ffe774de19c99268bcf0d45952c83eb3882e43de348816df9844ec803184ffdc47a01627b55b702
   languageName: node
   linkType: hard
 
@@ -2244,7 +2244,7 @@ __metadata:
   resolution: "cardano-metadata-oracle@workspace:."
   dependencies:
     "@blockfrost/blockfrost-js": ^0.8.0
-    "@emurgo/cardano-serialization-lib-nodejs": ^7.1.0
+    "@emurgo/cardano-serialization-lib-nodejs": ^8.0.0
     "@oclif/command": ^1.8.0
     "@oclif/config": ^1.17.0
     "@oclif/dev-cli": ^1.26.0

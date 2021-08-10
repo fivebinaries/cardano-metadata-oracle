@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@blockfrost/blockfrost-js": "^0.8.0",
-        "@emurgo/cardano-serialization-lib-nodejs": "^7.1.0",
+        "@emurgo/cardano-serialization-lib-nodejs": "^8.0.0",
         "@oclif/command": "^1.8.0",
         "@oclif/config": "^1.17.0",
         "@oclif/plugin-help": "^3.2.2",

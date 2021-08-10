@@ -2,7 +2,7 @@ import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 
 export const signTransaction = (
     txBody: CardanoWasm.TransactionBody,
-    txMetadata: CardanoWasm.TransactionMetadata,
+    txMetadata: CardanoWasm.AuxiliaryData,
     signKey: CardanoWasm.PrivateKey,
 ): CardanoWasm.Transaction => {
     const txHash = CardanoWasm.hash_transaction(txBody);

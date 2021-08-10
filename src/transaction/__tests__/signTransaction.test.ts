@@ -12,7 +12,7 @@ describe('utils - signTransaction', () => {
                 CardanoWasm.TransactionBody.from_bytes(
                     Uint8Array.from(Buffer.from(f.txBody, 'hex')),
                 ),
-                CardanoWasm.TransactionMetadata.from_bytes(metadata.to_bytes()),
+                CardanoWasm.AuxiliaryData.from_bytes(metadata.to_bytes()),
                 deriveAddressPrvKey(fixtures.PRV_KEY, [0, 0, 0]).signKey,
             );
             expect(Buffer.from(signedTx.to_bytes()).toString('hex')).toBe(

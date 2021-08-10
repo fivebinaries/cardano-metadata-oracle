@@ -107,7 +107,7 @@ let
   });
 
 cacheEntries = {
-"@emurgo/cardano-serialization-lib-nodejs@npm:7.1.0" = { filename = "@emurgo-cardano-serialization-lib-nodejs-npm-7.1.0-9dde1e6073-845f0c2118.zip"; sha512 = "845f0c21182263ca7ae251517c19d754540516f97258e7c5e4225ad33c9fd46fb1f06a86291b60b0a737e1ee5448abed77c5f7c5b17da189cce35a5873346d47"; };
+"@emurgo/cardano-serialization-lib-nodejs@npm:8.0.0" = { filename = "@emurgo-cardano-serialization-lib-nodejs-npm-8.0.0-5bee247bd6-1eae2aa3e9.zip"; sha512 = "1eae2aa3e9b721352e779a9bd4cf442c21b74a7723c36f421ffe774de19c99268bcf0d45952c83eb3882e43de348816df9844ec803184ffdc47a01627b55b702"; };
 "@types/js-yaml@npm:4.0.1" = { filename = "@types-js-yaml-npm-4.0.1-b6801279bc-fd8985289c.zip"; sha512 = "fd8985289c713e3b2a494d6c243139c94bdda856af60346cf0c0da25bd6289e0165d367e623202b8cdfab7cef73a424a183282063beb0c0823d152dbec6d4959"; };
 "@types/jsonpath@npm:0.2.0" = { filename = "@types-jsonpath-npm-0.2.0-7e705d9978-4862629883.zip"; sha512 = "4862629883b5cc01d0b40cc54f0c46296a6c643f4b5b379c8af180dbc36b71eb8184bc6c1f3ec96c436f136d894f5e4e6b10c507d0329f6acf69449f25b705e1"; };
 "@types/node@npm:16.0.0" = { filename = "@types-node-npm-16.0.0-99daaf613d-0302e376d5.zip"; sha512 = "0302e376d5272170478468f023a34dd8b4da998bee02bddfed9b0f1c80add77d02fe9c737fad8943ab2dc981601b71c5714b9f971560d5519c1c814cf2c8bc50"; };
