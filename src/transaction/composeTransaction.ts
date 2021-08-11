@@ -53,7 +53,10 @@ export const composeTransaction = (
     const outputFee = txBuilder.fee_for_output(testOutput);
     totalFeesAmount = totalFeesAmount.checked_add(outputFee);
 
-    const sortedUtxos = sortUtxos(utxos);
+    const lovelaceUtxos = utxos.filter(
+        u => !u.amount.find(a => a.unit !== 'lovelace'),
+    );
+    const sortedUtxos = sortUtxos(lovelaceUtxos);
     const usedUtxos = [];
     for (const utxo of sortedUtxos) {
         const amount = utxo.amount.find(a => a.unit === 'lovelace')?.quantity;
