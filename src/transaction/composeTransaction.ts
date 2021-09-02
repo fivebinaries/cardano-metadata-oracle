@@ -9,7 +9,7 @@ export const composeTransaction = (
 ): {
     txId: string;
     txBody: CardanoWasm.TransactionBody;
-    txMetadata: CardanoWasm.TransactionMetadata;
+    txMetadata: CardanoWasm.AuxiliaryData;
     info: {
         usedUtxos: UTXO[];
         utxosTotalAmount: CardanoWasm.BigNum;
@@ -40,10 +40,10 @@ export const composeTransaction = (
     let totalFeesAmount = CardanoWasm.BigNum.from_str('0');
 
     // set metadata
-    const txMetadata = CardanoWasm.TransactionMetadata.from_bytes(
+    const txMetadata = CardanoWasm.AuxiliaryData.from_bytes(
         metadatum.to_bytes(),
     );
-    txBuilder.set_metadata(txMetadata);
+    txBuilder.set_auxiliary_data(txMetadata);
     totalFeesAmount = txBuilder.min_fee();
 
     const testOutput = CardanoWasm.TransactionOutput.new(

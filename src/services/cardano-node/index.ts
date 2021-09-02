@@ -40,7 +40,7 @@ export const convertToCliTx = (
 
 export const convertToCliTxDraft = (
     txBody: CardanoWasm.TransactionBody,
-    txMetadata: CardanoWasm.TransactionMetadata,
+    txMetadata: CardanoWasm.AuxiliaryData,
     options?: {
         description?: string;
     },

@@ -22,7 +22,7 @@ describe('fetchData', () => {
                     CardanoWasm.TransactionBody.from_bytes(
                         Uint8Array.from(Buffer.from(f.txBody, 'hex')),
                     ),
-                    CardanoWasm.TransactionMetadata.from_bytes(
+                    CardanoWasm.AuxiliaryData.from_bytes(
                         Uint8Array.from(Buffer.from(f.txMetadata, 'hex')),
                     ),
                     f.options,
