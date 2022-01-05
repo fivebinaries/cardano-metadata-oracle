@@ -69,6 +69,8 @@ export const parseDataFromResponse = (
         }
         return stringifiedData;
     } catch (err) {
+        // log parser errors to help user identify the problem with json path
+        console.log(err?.message ?? err);
         return null;
     }
 };
