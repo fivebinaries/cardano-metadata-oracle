@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   log thrown errors during parsing fetched date
 
-## [1.0.0] - 2021-07-05
+## [0.0.1] - 2021-07-05
 
 ### Added
 
