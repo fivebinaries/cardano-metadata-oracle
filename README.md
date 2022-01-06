@@ -88,6 +88,8 @@ When using the Cardano full node, make sure you set the environmental variable `
 
 The metadata oracle node needs a list of origins from where to fetch the data. The source of this file is specified using`--seed-file`. It is a simple YAML file, using the `ticker` as the top element with a list sources for given ticker. In the example below, we define two sources for ticker `ADAUSD`. The `path` proprieties specifies the position within the _json_ document.
 
+_There are many possible expressions you can use in `path` to extract the data you need. For full syntax and more examples head to [jsonpath documentation](https://github.com/dchester/jsonpath#readme)._
+
 ```yarm
 ADAUSD:
   - name: coinGecko

@@ -55,6 +55,33 @@ export const parseDataFromResponse = [
         path: '$.id',
         result: null,
     },
+    {
+        description: 'Find item in a array',
+        data: [
+            {
+                token: '8f52f6a88acf6127bc4758a16b6047afc4da7887feae121ec217b75a',
+                price_change_dict: {
+                    priceADAAsk: 0.92,
+                    priceADABid: 0.89,
+                    priceADA: 0.905,
+                    priceADAChangeDay: 0,
+                    priceADAChangeWeek: 0,
+                },
+            },
+            {
+                token: 'f555c46bad0731d080c9381d7fff6f82839946a66bd070d185e1ea2f',
+                price_change_dict: {
+                    priceADAAsk: 0.003,
+                    priceADABid: 0.001,
+                    priceADA: 0.002,
+                    priceADAChangeDay: 0,
+                    priceADAChangeWeek: 0,
+                },
+            },
+        ],
+        path: "$[?(@.token == 'f555c46bad0731d080c9381d7fff6f82839946a66bd070d185e1ea2f')].price_change_dict.priceADA",
+        result: '0.002',
+    },
 ];
 
 export const fetchDataSources = [
