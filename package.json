@@ -1,6 +1,6 @@
 {
     "name": "cardano-metadata-oracle",
-    "version": "0.0.1-alpha",
+    "version": "0.0.2",
     "author": "Five Binaries",
     "bin": "./bin/run",
     "bugs": "https://github.com/fivebinaries/cardano-metadata-oracle/issues",
