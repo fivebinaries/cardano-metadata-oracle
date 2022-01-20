@@ -10,9 +10,13 @@ describe('utils - composeTransaction', () => {
             const tx = utils.composeTransaction(f.address, metadata, f.utxos);
 
             // output amount
-            expect(tx.txBody.outputs().get(0).amount().coin().to_str()).toBe(
-                f.result.outputAmount,
-            );
+            if (tx.txBody.outputs().len() > 0) {
+                expect(
+                    tx.txBody.outputs().get(0).amount().coin().to_str(),
+                ).toBe(f.result.outputAmount);
+            } else {
+                expect(f.result.outputAmount).toBe('0');
+            }
             expect(tx.info.outputAmount.to_str()).toBe(f.result.outputAmount);
 
             // fee amount
