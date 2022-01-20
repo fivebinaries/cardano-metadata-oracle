@@ -26,11 +26,7 @@ export class BlockfrostClient implements BlockchainClient {
             const response = await this.client.txSubmit(transaction);
             return response;
         } catch (err) {
-            if (err?.data) {
-                console.log(err?.data);
-            } else {
-                console.log(err);
-            }
+            console.log(err);
             throw Error(ERROR.TRANSACTION_SUBMIT_FAIL);
         }
     };
@@ -40,11 +36,7 @@ export class BlockfrostClient implements BlockchainClient {
             const response = await this.client.addressesUtxosAll(address);
             return response;
         } catch (err) {
-            if (err?.data) {
-                console.log(err?.data);
-            } else {
-                console.log(err);
-            }
+            console.log(err);
             throw Error(ERROR.UTXOS_FETCH_FAIL);
         }
     };
